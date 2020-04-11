@@ -6,7 +6,6 @@
 #include <condition_variable>
 #include "badgerThread.h"
 #include "sysStructure.h"
-#include "lockManager.h"
 
 namespace littleBadger {
   /**

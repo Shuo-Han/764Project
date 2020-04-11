@@ -7,11 +7,11 @@ CFLAGS = -std=c++11 -Wall -Werror
 # LIB = lib
 
 # get littleBadger_main
-all: threadManager.o badgerThread.o txnManager.o sysStructure.o
-	$(CC) $(CFLAGS) threadManager.o badgerThread.o txnManager.o sysStructure.o -o littleBadger_main
+all: threadManager.o badgerThread.o lockManager.o txnManager.o sysStructure.o
+	$(CC) $(CFLAGS) threadManager.o badgerThread.o lockManager.o txnManager.o sysStructure.o -o littleBadger_main
 
-# specify that threadPool.o is created based on filescan.*
-# g++ -std=c++11 -Wall -Werror -c -I. filescan.cpp
+# specify that threadManager.o is created based on threadManager.*
+# g++ -std=c++11 -Wall -Werror -c -I. threadManager.cpp
 threadManager.o: threadManager.* 
 	$(CC) $(CFLAGS) -c -I. threadManager.cpp 
 
@@ -20,8 +20,13 @@ threadManager.o: threadManager.*
 badgerThread.o: badgerThread.* 
 	$(CC) $(CFLAGS) -c -I. badgerThread.cpp 
 
+# specify that lockManager.o is created based on lockManager.*
+# g++ -std=c++11 -Wall -Werror -c -I. lockManager.cpp
+lockManager.o: lockManager.*  
+	$(CC) $(CFLAGS) -c -I. lockManager.cpp
+
 # specify that txnManager.o is created based on txnManager.*
-# g++ -std=c++11 -Wall -Werror -c -I. btree.cpp
+# g++ -std=c++11 -Wall -Werror -c -I. txnManager.cpp
 txnManager.o: txnManager.*  
 	$(CC) $(CFLAGS) -c -I. txnManager.cpp
 
