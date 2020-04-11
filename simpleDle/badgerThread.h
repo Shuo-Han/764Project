@@ -2,7 +2,10 @@
 
 #include <map> 
 #include <string>
+#include <condition_variable>
+#include <mutex>
 #include "txnManager.h"
+#include "lockManager.h"
 
 namespace littleBadger {
   // concurrency control algroithm: deferredLockEnforecment, traditional
@@ -22,17 +25,26 @@ namespace littleBadger {
     DLSol dl_sol;
 
     // parameters for a transaction
-    TxnAction action;
-    int key;
-    std::string value;
+    std::map<int, Semantic> reocrd_to_lock;
+    std::vector<TxnAction> actions;
+    std::vector<int> keys;
+    std::vector<std::string> values;
 
-    BadgerThread(CCAlg alg, DLSol sol, TxnAction action, int key, std::string value) {
+    // synchronization
+    std::condition_variable condition;
+    std::mutex sharedLock;
+    bool allSHAREDpurged = false;
+
+    BadgerThread(CCAlg alg, DLSol sol, Txn txn) {
       this->cc_alg = alg;
       this->dl_sol = sol;
-      this->action = action;
-      this->key = key;
-      this->value = value;
+      this->actions = txn.actions;
+      this->keys = txn.keys;
+      this->values = txn.values;
     };
+
+    // when all SHARED locks are released, lockManager call this function to wakeup BadgerThread
+    const void wakeup();
 
     // the basic function for a BadgerThread to exectue a transaction
     const void run();
@@ -44,12 +56,12 @@ namespace littleBadger {
     const void dleRun();
 
     // BadgerThread executes a read transaction 
-    const void readRecord();
+    const void readRecord(int key);
 
     // BadgerThread executes a write transaction 
-    const void writeRecord();
+    const void writeRecord(int key, std::string value);
 
     // BadgerThread executes a delete transaction 
-    const void deleteRecord();
+    const void deleteRecord(int key);
   };
 }

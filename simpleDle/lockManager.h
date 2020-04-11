@@ -1,3 +1,6 @@
+#pragma once
+
+#include <mutex>
 
 /**
  * Difference between a class and a struct in C++:
@@ -9,13 +12,23 @@
  */
 
 namespace littleBadger {
+  // semantics for locks, RESERVED and PENDDING are for DLE 
+  enum Semantic {SHARED, RESERVED, PENDDING, EXCLUSIVE};
 
-  // class LockManager {
-  // public:
-  //   bool getLock();
-  //   bool relLock();
+  class LockWrapper {
+  public:
+    Semantic semantic;
+    std::mutex mtx;
 
-  // private:
+  private:
     
-  // };
+  };
+
+  const bool requireLock(int key, Semantic s);
+
+  const bool releaseLock(int key);
+
+  const bool changeSemantic(int key);
+
+  const bool purgeAllShared();
 }
