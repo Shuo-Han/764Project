@@ -3,11 +3,11 @@
 # -I. is included so that gcc will look in the current directory (.) for including .h file. 
 # -c says not to run the linker. Then the output consists of object files output by the assembler.
 CC = g++
-CFLAGS = -std=c++11 -Wall -Werror
+CFLAGS = -std=c++17 -Wall -Werror
 # LIB = lib
 
 # get littleBadger_main
-all: threadManager.o badgerThread.o lockManager.o txnManager.o sysStructure.o
+all: threadManager.o badgerThread.o lockManager.o txnManager.o sysStructure.o 
 	$(CC) $(CFLAGS) threadManager.o badgerThread.o lockManager.o txnManager.o sysStructure.o -o littleBadger_main
 
 # specify that threadManager.o is created based on threadManager.*
@@ -34,5 +34,10 @@ txnManager.o: txnManager.*
 # g++ -std=c++11 -Wall -Werror -c -I. sysStructure.cpp
 sysStructure.o: sysStructure.*  
 	$(CC) $(CFLAGS) -c -I. sysStructure.cpp
+
+# specify that globals.o is created based on globals.*
+# g++ -std=c++11 -Wall -Werror -c -I. globals.h
+# globals.o: globals.*  
+# 	$(CC) $(CFLAGS) -c -I. globals.cpp
 
 

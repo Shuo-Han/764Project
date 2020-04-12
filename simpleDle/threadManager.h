@@ -39,7 +39,7 @@ namespace littleBadger {
       // std::queue<std::function<void()>> tasks; // notuse in this project
 
       // BadgerThread pointer is used to get a task from taskO
-      BadgerThread *taskO;
+      // BadgerThread *taskO;
 
       // synchronization
       std::condition_variable condition;
@@ -69,9 +69,12 @@ namespace littleBadger {
             } 
 
             // get an olders task from queue and executes it
-            taskO = &(tasksO.front());
+            // taskO = &(tasksO.front());
+            BadgerThread newTask = tasksO.front();
             this->tasksO.pop();
-            taskO->run();
+            newTask.run();
+            // std::cout << taskO->actions.size() << " 00000" << std::endl;
+            // taskO->run();
           }
         }
       );
@@ -114,7 +117,11 @@ namespace littleBadger {
           throw std::runtime_error("enqueue on stopped ThreadPool");
       }
 
-      tasksO.emplace(bThread);
+      for (int i = 0; i < bThread.actions.size(); i++) {
+        std::cout << bThread.keys[i] << " " << bThread.actions[i] << std::endl; 
+      }
+
+      tasksO.push(bThread);
       condition.notify_one();
   }
 

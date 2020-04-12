@@ -30,7 +30,15 @@ namespace littleBadger {
    * each lin of txns.txt is like: txnID READ_O key value
    */
   const void bulildDataSet() {
-    std::cout << "start building data set" << std::endl;;
+    std::fstream fileStream;
+    fileStream.open("txns.txt");
+    if (fileStream.is_open()) {
+      std::cout << "txns.txt exists" << std::endl;
+      fileStream.close();
+      return;
+    }
+
+    std::cout << "start building data set" << std::endl;
     std::ofstream myfile ("txns.txt");
 
     if (myfile.is_open()) {

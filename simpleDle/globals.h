@@ -1,8 +1,11 @@
-#include <map>
-#include <shared_mutex>
-#include "lockManager.h"
-namespace littleBadger{
-    extern std::map<int, LockWrapper> lockMap;
-    extern std::map<int, std::string> mapStructure;
-    
+#pragma once
+
+namespace littleBadger {
+  // concurrency control algroithm: deferredLockEnforecment, traditional
+  enum CCAlg {DLE, TRAD};
+  // solution for dead lock: waitForever, killImediately
+  enum DLSol {WAIT, KILL};
+
+  CCAlg alg = TRAD;
+  DLSol sol = KILL;
 }

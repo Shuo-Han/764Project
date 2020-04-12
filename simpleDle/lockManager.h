@@ -21,17 +21,18 @@ namespace littleBadger {
     std::shared_timed_mutex m;
     int sharedRefCount;
 
-    LockWrapper();
+    LockWrapper(int test);
 
   private:
     
   };
 
+  // init lockManager
+  const void initLockManager(int numRecord);
+
+  // acquire a lock for a record
   const bool acquire(int key, Semantic s);
 
+  // release a lock of a record
   const bool release(int key);
-
-  const bool changeSemantic(int key);
-
-  const bool purgeAllShared();
 }

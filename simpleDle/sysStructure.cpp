@@ -3,19 +3,19 @@
 #include <iostream>
 #include <shared_mutex>
 #include "sysStructure.h"
-#include "globals.h"
 
 namespace littleBadger {
+  std::map<int, std::string> mapStructure;
+
   // create a map with 100 pairs, ex. 0:0, 1:1, ..., 99:99
   const void initMapStructure() {
     for (int i = 0; i < 100; i++) {
       mapStructure.emplace(i, std::to_string(i));
-      lockMap.emplace(i, LockWrapper());
     }
   }
 
   const void readMap(int key) {
-    std::cout << "read " <<  mapStructure.find(key)->second << " finish" << std::endl;
+    std::cout << "read " <<  key << " finish" << std::endl;
   }
 
   const void writeMap(int key, std::string value) {

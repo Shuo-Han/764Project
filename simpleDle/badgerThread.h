@@ -8,11 +8,6 @@
 #include "lockManager.h"
 
 namespace littleBadger {
-  // concurrency control algroithm: deferredLockEnforecment, traditional
-  enum CCAlg {DLE, TRAD};
-  // solution for dead lock: waitForever, killImediately
-  enum DLSol {WAIT, KILL};
-
   /**
    * BadgerThread is an object that can be called by a thread of the threadManager. 
    * a BadgerThread is corresponing to a transaction by having infomation of a transaction.
@@ -20,31 +15,22 @@ namespace littleBadger {
    */
   class BadgerThread {
   public:
-    // parameters for a BadgerThread to cooperate with the other BadgerThreads
-    CCAlg cc_alg; 
-    DLSol dl_sol;
-
-    // parameters for a transaction
-    std::map<int, Semantic> reocrd_to_lock;
+    // parameters of a transaction
+    std::map<int, Semantic> reocrd_to_lock; // a record is represented by a key 
     std::vector<TxnAction> actions;
     std::vector<int> keys;
     std::vector<std::string> values;
 
     // synchronization
-    std::condition_variable condition;
-    std::mutex sharedLock;
-    bool allSHAREDpurged = false;
+    // std::condition_variable condition;
+    // std::mutex sharedLock;
+    // bool allSHAREDpurged = false;
 
-    BadgerThread(CCAlg alg, DLSol sol, Txn txn) {
-      this->cc_alg = alg;
-      this->dl_sol = sol;
+    BadgerThread(Txn txn) {
       this->actions = txn.actions;
       this->keys = txn.keys;
       this->values = txn.values;
     };
-
-    // when all SHARED locks are released, lockManager call this function to wakeup BadgerThread
-    const void wakeup();
 
     // the basic function for a BadgerThread to exectue a transaction
     const void run();
