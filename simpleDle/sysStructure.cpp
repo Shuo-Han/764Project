@@ -1,16 +1,16 @@
 #include <map>
 #include <string>
 #include <iostream>
+#include <shared_mutex>
 #include "sysStructure.h"
+#include "globals.h"
 
 namespace littleBadger {
-  // empty map container 
-  std::map<int, std::string> mapStructure;
-
   // create a map with 100 pairs, ex. 0:0, 1:1, ..., 99:99
   const void initMapStructure() {
     for (int i = 0; i < 100; i++) {
-      mapStructure.insert(std::pair<int, std::string>(i, std::to_string(i)));
+      mapStructure.emplace(i, std::to_string(i));
+      lockMap.emplace(i, LockWrapper());
     }
   }
 

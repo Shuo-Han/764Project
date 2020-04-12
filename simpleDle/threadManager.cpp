@@ -25,10 +25,10 @@ int main(int argc, char **argv) {
   std::vector<Txn> txnSet = readTxnSet();
 
   // use Txn objects to init BadgerThread objects and enqueue them into thread pool
-  for (int i = 0; i < txnSet.size(); i++) {
-    BadgerThread expThd(alg, sol, txnSet[i]);
-    pool.enqueueObj(expThd);
-  }
+  // for (int i = 0; i < txnSet.size(); i++) {
+  //   BadgerThread expThd(alg, sol, txnSet[i]);
+  //   pool.enqueueObj(expThd);
+  // }
 
   // end threads
   // pool.~ThreadPool();

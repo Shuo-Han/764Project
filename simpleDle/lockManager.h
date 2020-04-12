@@ -1,6 +1,6 @@
 #pragma once
 
-#include <mutex>
+#include <shared_mutex>
 
 /**
  * Difference between a class and a struct in C++:
@@ -13,20 +13,23 @@
 
 namespace littleBadger {
   // semantics for locks, RESERVED and PENDDING are for DLE 
-  enum Semantic {SHARED, RESERVED, PENDDING, EXCLUSIVE};
+  enum Semantic {UNLOCKED, SHARED, RESERVED, PENDDING, EXCLUSIVE};
 
   class LockWrapper {
   public:
     Semantic semantic;
-    std::mutex mtx;
+    std::shared_timed_mutex m;
+    int sharedRefCount;
+
+    LockWrapper();
 
   private:
     
   };
 
-  const bool requireLock(int key, Semantic s);
+  const bool acquire(int key, Semantic s);
 
-  const bool releaseLock(int key);
+  const bool release(int key);
 
   const bool changeSemantic(int key);
 

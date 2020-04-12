@@ -42,14 +42,14 @@ namespace littleBadger {
     for (int actIndex = 0; actIndex < actions.size(); actIndex++) {
       TxnAction act = actions[actIndex];
       if (act == READ_RW) {
-        if (requireLock(keys[actIndex], RESERVED)) {
+        if (acquire(keys[actIndex], RESERVED)) {
           reocrd_to_lock.insert(std::pair<int, Semantic>(keys[actIndex], RESERVED));
         } else {
           // KILL thread when failing to require a lock
           return;
         }
       } else if (act == WRITE) {
-        if (requireLock(keys[actIndex], RESERVED)) {
+        if (acquire(keys[actIndex], RESERVED)) {
           reocrd_to_lock.insert(std::pair<int, Semantic>(keys[actIndex], EXCLUSIVE));
         } else {
           // KILL thread when failing to require a lock
@@ -79,8 +79,8 @@ namespace littleBadger {
     // wait until all SHARED locks are released 
     // when it return false, then condition.wait(lock, bool) will keep waiting.
     // when it return true, then we can move to next line if the thread receives a notify
-    std::unique_lock<std::mutex> lk(sharedLock);
-    condition.wait(lk, purgeAllShared());
+    // std::unique_lock<std::mutex> lk(sharedLock);
+    // condition.wait(lk, purgeAllShared());
 
     // change PENDDING to EXCLUSIVE
     for (it = reocrd_to_lock.begin(); it != reocrd_to_lock.end(); it++) {
