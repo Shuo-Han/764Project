@@ -24,7 +24,7 @@ namespace littleBadger {
    */
   const void BadgerThread::tradRun() {
     // get locks for all actions
-    for (int actIndex = 0; actIndex < actions.size(); actIndex++) {
+    for (size_t actIndex = 0; actIndex < actions.size(); actIndex++) {
       TxnAction act = actions[actIndex];
       if (act == READ_O) {
         acquire(keys[actIndex], SHARED);
@@ -43,7 +43,7 @@ namespace littleBadger {
     // read phase / logic operation
 
     // commit phase 
-    for (int actIndex = 0; actIndex < actions.size(); actIndex++) {
+    for (size_t actIndex = 0; actIndex < actions.size(); actIndex++) {
       if (actions[actIndex] == WRITE) {
         writeRecord(keys[actIndex], values[actIndex]);
       }
@@ -51,7 +51,7 @@ namespace littleBadger {
     // commit phase 
 
     // release lock
-    for (int actIndex = 0; actIndex < actions.size(); actIndex++) {
+    for (size_t actIndex = 0; actIndex < actions.size(); actIndex++) {
       release(keys[actIndex]);
     }
   };

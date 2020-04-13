@@ -117,7 +117,7 @@ namespace littleBadger {
           throw std::runtime_error("enqueue on stopped ThreadPool");
       }
 
-      for (int i = 0; i < bThread.actions.size(); i++) {
+      for (size_t i = 0; i < bThread.actions.size(); i++) {
         std::cout << bThread.keys[i] << " " << bThread.actions[i] << std::endl; 
       }
 

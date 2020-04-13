@@ -7,7 +7,7 @@ CFLAGS = -std=c++17 -Wall -Werror
 # LIB = lib
 
 # get littleBadger_main
-all: threadManager.o badgerThread.o lockManager.o txnManager.o sysStructure.o 
+all: threadManager.o badgerThread.o lockManager.o txnManager.o sysStructure.o
 	$(CC) $(CFLAGS) threadManager.o badgerThread.o lockManager.o txnManager.o sysStructure.o -o littleBadger_main
 
 # specify that threadManager.o is created based on threadManager.*
@@ -34,10 +34,5 @@ txnManager.o: txnManager.*
 # g++ -std=c++11 -Wall -Werror -c -I. sysStructure.cpp
 sysStructure.o: sysStructure.*  
 	$(CC) $(CFLAGS) -c -I. sysStructure.cpp
-
-# specify that globals.o is created based on globals.*
-# g++ -std=c++11 -Wall -Werror -c -I. globals.h
-# globals.o: globals.*  
-# 	$(CC) $(CFLAGS) -c -I. globals.cpp
 
 

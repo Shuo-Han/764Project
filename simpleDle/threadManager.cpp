@@ -24,7 +24,7 @@ int main(int argc, char **argv) {
   std::cout << txnSet.size() << " finish building txnSet" << std::endl;
 
   // use Txn objects to init BadgerThread objects and enqueue them into thread pool
-  for (int i = 0; i < txnSet.size(); i++) {
+  for (size_t i = 0; i < txnSet.size(); i++) {
     BadgerThread expThd(txnSet[i]);
     // std::cout << expThd.actions.size() << " ====" << std::endl;
     pool.enqueueObj(expThd);
