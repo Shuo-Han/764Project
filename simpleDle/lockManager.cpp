@@ -34,10 +34,10 @@ namespace littleBadger {
 
     switch (curLock->semantic) {
       case UNLOCKED: 
-        std::cout << "ERROR: attemping unlocked records not in-use";
+        std::cout << "ERROR: attemping unlocked records not in-use\n";
         return false;
       case RESERVED:
-        std::cout << "ERROR: attemping release reserved lock";
+        std::cout << "ERROR: attemping release reserved lock\n";
         return false;
       case EXCLUSIVE:
         curLock->m.unlock();
@@ -46,8 +46,9 @@ namespace littleBadger {
         curLock->m.unlock_shared();
         if(curLock->sharedRefCount-- == 0)
           curLock->semantic = UNLOCKED;
+        break;
       default:
-        std::cout << "Unhandled lock mode" << curLock->semantic;
+        std::cout << "Unhandled lock mode " << curLock->semantic << " \n";
     }
 
     return true;

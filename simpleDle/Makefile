@@ -3,7 +3,7 @@
 # -I. is included so that gcc will look in the current directory (.) for including .h file. 
 # -c says not to run the linker. Then the output consists of object files output by the assembler.
 CC = g++
-CFLAGS = -std=c++17 -Wall -Werror
+CFLAGS = -std=c++17 -Wall -Werror -pthread
 # LIB = lib
 
 # get littleBadger_main
@@ -34,5 +34,8 @@ txnManager.o: txnManager.*
 # g++ -std=c++11 -Wall -Werror -c -I. sysStructure.cpp
 sysStructure.o: sysStructure.*  
 	$(CC) $(CFLAGS) -c -I. sysStructure.cpp
+
+clean:
+	-rm *.o
 
 
