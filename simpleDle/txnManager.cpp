@@ -13,16 +13,16 @@ namespace littleBadger {
    * this method is used to create a key for operations in txns
    * keys range from 0-99
    */
-  int getKey(std::set<int> visit) {
+  void getKey(std::vector<int> *visit) {
     int actKey; 
     actKey = rand() % 100; // key
     // if key is already visited, change to another key
-    while (visit.find(actKey) != visit.end()) {
+    while (std::find(visit->begin(), visit->end(), actKey) != visit->end()) {
       actKey = rand() % 100; 
     }
-    visit.insert(actKey);
+    visit->push_back(actKey);
 
-    return actKey;
+    return;
   }
 
   /**
@@ -30,52 +30,43 @@ namespace littleBadger {
    * each lin of txns.txt is like: txnID READ_O key value
    */
   const void bulildDataSet() {
-    std::fstream fileStream;
-    fileStream.open("txns.txt");
-    if (fileStream.is_open()) {
-      std::cout << "txns.txt exists" << std::endl;
-      fileStream.close();
-      return;
-    }
-
     std::cout << "start building data set" << std::endl;
     std::ofstream myfile ("txns.txt");
 
     if (myfile.is_open()) {
       // there are 5000 txns and 100 records
       for (int txnID = 0; txnID < 5000; txnID++) {
-        int txnType = rand() % 2; // 0: read_only case, 1: read_write case
-        std::set<int> visit;
+        int txnType = 1; // rand() % 2; // 0: read_only case, 1: read_write case
+        std::vector<int> visit;
 
+        // get 10 keys and make them in order
+        for (int i = 0; i < 10; i++) {
+          getKey(&visit);  
+        }
+        std::sort(visit.begin(), visit.end());
+
+        // a read only transactoin has 10 read actions on different keys
         if (txnType == 0) {
-          // a read only transactoin has 10 read actions on different keys
           for (int i = 0; i < 10; i++) {
-            int actKey = getKey(visit);
-
             char buffer[30];
-            sprintf(buffer, "%d %s %d %d", txnID, "READ_O", actKey, 0); 
+            sprintf(buffer, "%d %s %d %d", txnID, "READ_O", visit[i], 0); 
             myfile << buffer << std::endl;;
           }
+        // a read write transactoin has 7 reads and 3 writes
         } else {
-          // a read write transactoin has 5 reads
-          for (int i = 0; i < 5; i++) {
-            int actKey = getKey(visit);
-
+          for (int i = 0; i < 7; i++) {
             char buffer[30];
-            sprintf(buffer, "%d %s %d %d", txnID, "READ_RW", actKey, 0); 
+            sprintf(buffer, "%d %s %d %d", txnID, "READ_RW", visit[i], 0); 
             myfile << buffer << std::endl;;
           }
-          // a read write transactoin has 5 writes
-          for (int i = 0; i < 5; i++) {
-            int actKey = getKey(visit);
-
+          for (int i = 7; i < 10; i++) {
             char buffer[30];
-            sprintf(buffer, "%d %s %d %d", txnID, "WRITE", actKey, actKey + 1); 
+            sprintf(buffer, "%d %s %d %d", txnID, "WRITE", visit[i], visit[i] + 1); 
             myfile << buffer << std::endl;;
           }
         }
+
         visit.clear();
-        std::cout << "finished " << txnID << std::endl;
       }
     } else {
       std::cout << "unable to open txns.txt" << std::endl;

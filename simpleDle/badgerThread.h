@@ -3,9 +3,10 @@
 #include <map> 
 #include <string>
 #include <condition_variable>
-#include <mutex>
+#include <time.h>
 #include "txnManager.h"
 #include "lockManager.h"
+#include "sysStructure.h"
 
 namespace littleBadger {
   /**
@@ -20,16 +21,13 @@ namespace littleBadger {
     std::vector<TxnAction> actions;
     std::vector<int> keys;
     std::vector<std::string> values;
-
-    // synchronization
-    // std::condition_variable condition;
-    // std::mutex sharedLock;
-    // bool allSHAREDpurged = false;
+    double duration;
 
     BadgerThread(Txn txn) {
       this->actions = txn.actions;
       this->keys = txn.keys;
       this->values = txn.values;
+      this->duration = 0;
     };
 
     // the basic function for a BadgerThread to exectue a transaction
@@ -46,6 +44,9 @@ namespace littleBadger {
 
     // BadgerThread executes a write transaction 
     const void writeRecord(int key, std::string value);
+
+    // BadgerThread executes a pointer switch for updating record by private buffer
+    const void switchRecord(int key, Record record);
 
     // BadgerThread executes a delete transaction 
     const void deleteRecord(int key);

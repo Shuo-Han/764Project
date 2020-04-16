@@ -18,7 +18,15 @@ int main(int argc, char **argv) {
   std::this_thread::sleep_for (std::chrono::seconds (3));
 
   // load txns.txt and transform them to Txn objects
+  // std::fstream fileStream;
+    // fileStream.open("txns.txt");
+    // if (fileStream.is_open()) {
+    //   std::cout << "txns.txt exists" << std::endl;
+    //   fileStream.close();
+    //   return;
+    // }
   std::cout << "build txns" << std::endl;
+  // bulildDataSet();
   buildTxnSet(); 
   std::vector<Txn> txnSet = readTxnSet();
   std::cout << txnSet.size() << " finish building txnSet" << std::endl;

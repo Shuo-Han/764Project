@@ -7,11 +7,13 @@
 namespace littleBadger {
   std::map<int, LockWrapper> lockManager; 
 
-  LockWrapper::LockWrapper(int test):semantic(UNLOCKED), sharedRefCount(0) {};
+  LockWrapper::LockWrapper():semantic(UNLOCKED), sharedRefCount(0) {};
 
   const void initLockManager(int numRecord) {
     for (int i = 0; i < numRecord; i++) {
-      lockManager.emplace(i, 0);
+      lockManager.emplace(std::piecewise_construct,
+          std::forward_as_tuple(i),
+          std::forward_as_tuple());
     }
   }
 
@@ -42,15 +44,22 @@ namespace littleBadger {
       case EXCLUSIVE:
         curLock->m.unlock();
         curLock->semantic = UNLOCKED;
+        return true;
       case SHARED:
         curLock->m.unlock_shared();
         if(curLock->sharedRefCount-- == 0)
           curLock->semantic = UNLOCKED;
-        break;
+        return true;
       default:
         std::cout << "Unhandled lock mode " << curLock->semantic << " \n";
+        return false;
     }
 
     return true;
+  }
+
+  const void check(int key) {
+    LockWrapper* curLock = &lockManager.find(key)->second;
+    std::cout << "key: " << key << ", lock: " << Semantic(curLock->semantic) << std::endl;
   }
 }

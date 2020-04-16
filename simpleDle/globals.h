@@ -8,4 +8,5 @@ namespace littleBadger {
 
   CCAlg alg = TRAD;
   DLSol sol = KILL;
+  int sleepCount = 10;
 }

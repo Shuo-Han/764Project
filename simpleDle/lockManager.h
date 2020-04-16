@@ -13,7 +13,7 @@
 
 namespace littleBadger {
   // semantics for locks, RESERVED and PENDDING are for DLE 
-  enum Semantic {UNLOCKED, SHARED, RESERVED, PENDDING, EXCLUSIVE};
+  enum Semantic {UNLOCKED, SHARED, RESERVED, PENDING, EXCLUSIVE};
 
   class LockWrapper {
   public:
@@ -21,7 +21,7 @@ namespace littleBadger {
     std::shared_timed_mutex m;
     int sharedRefCount;
 
-    LockWrapper(int test);
+    LockWrapper();
 
   private:
     
@@ -35,4 +35,7 @@ namespace littleBadger {
 
   // release a lock of a record
   const bool release(int key);
+
+  // check lock status of a record
+  const void check(int key);
 }
