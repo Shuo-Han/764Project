@@ -1,6 +1,7 @@
 #pragma once
 
 #include <shared_mutex>
+#include <mutex>
 
 /**
  * Difference between a class and a struct in C++:
@@ -18,7 +19,11 @@ namespace littleBadger {
   class LockWrapper {
   public:
     Semantic semantic;
+    // shared mode is for SHARED and X mode for PENDING and EXCLUSIVE
     std::shared_timed_mutex m;
+    // serves for RESERVED mode, block other RESERVED acquisitions
+    // while allowing more incoming SHARED
+    std::mutex r;
     int sharedRefCount;
 
     LockWrapper();
@@ -32,6 +37,10 @@ namespace littleBadger {
 
   // acquire a lock for a record
   const bool acquire(int key, Semantic s);
+
+  // helpers for acquire() 
+  const bool acquireTRAD(LockWrapper* cur, Semantic s);
+  const bool acquireDLE(LockWrapper* cur, Semantic s);
 
   // release a lock of a record
   const bool release(int key);
