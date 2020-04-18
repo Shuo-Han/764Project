@@ -3,11 +3,20 @@
 #include "threadManager.h"
 #include "lockManager.h"
 #include "sysStructure.h"
+#include "globals.h"
 
 using namespace littleBadger;
 
+  CCAlg alg;
+  DLSol sol;
+  int sleepCount;
+
 int main(int argc, char **argv) {
   std::cout << "start project" << std::endl;
+
+  alg = TRAD;
+  sol = KILL;
+  sleepCount = 10;
 
   // init mapStructure
   initMapStructure();

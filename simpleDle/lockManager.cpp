@@ -46,12 +46,13 @@ namespace littleBadger {
       cur->m.lock_shared();
       cur->semantic = SHARED;
       cur->sharedRefCount++;
+      return true;
     } else if(s == EXCLUSIVE){
       cur->m.lock();
       cur->semantic = EXCLUSIVE;
       return true;
     }
-    std::cout << s << " lock not allowed under TRAD mode\n";
+    std::cout << Semantic(s) << " lock not allowed under TRAD mode\n";
     return false;
   }
 
