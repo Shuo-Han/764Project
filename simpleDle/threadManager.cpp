@@ -11,28 +11,36 @@ using namespace littleBadger;
   CCAlg alg;
   DLSol sol;
   int numKeys;
-  int sleepCount;
+  int ratio;
+  int numThread;
+  int readCount;
+  int writeCount;
+  extern int numKeys; 
 
 int main(int argc, char **argv) {
   auto start = std::chrono::system_clock::now();
   std::time_t start_time = std::chrono::system_clock::to_time_t(start);
   std::cout << "start project: " << std::ctime(&start_time) << std::endl;
 
-  alg = TRAD;
+  // global setting
+  alg = DLE;
   sol = KILL;
   numKeys = 50;
-  sleepCount = 10;
+  ratio = 5;
+  numThread = 100;
+  readCount = 10;
+  writeCount = 10;
 
   // init mapStructure
   initMapStructure(numKeys);
   initLockManager(numKeys);
 
   // create thread pool with 4 worker threads
-  ThreadManager pool(100);
+  ThreadManager pool(numThread);
   std::this_thread::sleep_for (std::chrono::seconds (3));
 
   std::cout << "build txns" << std::endl;
-  // bulildDataSet();
+  bulildDataSet(); // uncomment this line to build a new txns.txt with ratiom
   buildTxnSet(); 
   std::vector<Txn> txnSet = readTxnSet();
   std::cout << txnSet.size() << " finish building txnSet" << std::endl;

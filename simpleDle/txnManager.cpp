@@ -47,12 +47,12 @@ namespace littleBadger {
         std::sort(visit.begin(), visit.end());
 
         // 7 read only txns, and 3 read-write txns
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < ratio; i++) {
           char buffer[30];
           sprintf(buffer, "%d %s %d %d", txnID, "READ", visit[i], 0); 
           myfile << buffer << std::endl;;
         }
-        for (int i = 5; i < 10; i++) {
+        for (int i = ratio; i < 10; i++) {
           char buffer[30];
           sprintf(buffer, "%d %s %d %d", txnID, "WRITE", visit[i], visit[i] + 1); 
           myfile << buffer << std::endl;;
