@@ -14,8 +14,8 @@ namespace littleBadger {
   /**
    * create a map with 100 pairs, ex. 0:Record0, 1:Record1, ..., 99:Record99
    */
-  const void initMapStructure() {
-    for (int i = 0; i < 100; i++) {
+  const void initMapStructure(int numKeys) {
+    for (int i = 0; i < numKeys; i++) {
       Record newRecord(std::to_string(i));
       mapPointerStructure[i] = &newRecord;
     }
@@ -38,11 +38,11 @@ namespace littleBadger {
   }
 
   /**
-   * a simple map structure with no pointer
+   * a simple map structure with no pointer, which is not used by other classes 
    */
 
   std::map<int, std::string> mapSimpleStructure;
-
+  
   const void initMapSimpleStructure() {
     for (int i = 0; i < 100; i++) {
       mapSimpleStructure.emplace(i, std::to_string(i));

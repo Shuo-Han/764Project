@@ -4,8 +4,9 @@
 #include <vector>
 
 namespace littleBadger {
-  // a transaction has action for READ_ONLY, READ_READWRITE, WRITE
-  enum TxnAction {READ_O, READ_RW, WRITE};
+  // a transaction has action for READ and WRITE
+  // note that if a txn is not read only, then it is a read-write txn
+  enum TxnAction {READ, WRITE};
 
   /**
    * Txn stores basic info of a transaction

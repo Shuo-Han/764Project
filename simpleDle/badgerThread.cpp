@@ -4,6 +4,7 @@
 #include <map>
 #include "badgerThread.h"
 #include "globals.h"
+#include "stats.h"
 
 namespace littleBadger {
   /**
@@ -21,14 +22,13 @@ namespace littleBadger {
    * this is traditional lock mechanism for concurrency control 
    */
   const void BadgerThread::tradRun() {
-    // start time of this txn
-    clock_t start = clock();
-
+    // start time of getting locks
+    auto start = std::chrono::system_clock::now();
     // get locks for all actions
     std::vector<int> writeActions;
     for (size_t actIndex = 0; actIndex < actions.size(); actIndex++) {
       TxnAction act = actions[actIndex];
-      if (act == READ_O || READ_RW) {
+      if (act == READ) {
         acquire(keys[actIndex], SHARED);
         reocrd_to_lock.insert(std::pair<int, Semantic>(keys[actIndex], SHARED));
       } else if (act == WRITE) {
@@ -38,8 +38,13 @@ namespace littleBadger {
       }
     }
 
+    // latency of getting locks
+    auto end = std::chrono::system_clock::now();
+    std::chrono::duration<double, std::ratio<1>> elapsed_seconds = end - start;
+    setLatency(elapsed_seconds.count());
+
     // read phase / logic operation
-    std::this_thread::sleep_for (std::chrono::milliseconds(sleepCount));
+    std::this_thread::sleep_for(std::chrono::milliseconds(readCount));
 
     // commit phase 
     for (size_t actIndex = 0; actIndex < writeActions.size(); actIndex++) {
@@ -47,29 +52,26 @@ namespace littleBadger {
         writeRecord(keys[writeActions[actIndex]], values[writeActions[actIndex]]);
       }
     }
+    std::this_thread::sleep_for(std::chrono::milliseconds(writeCount));
 
     // release locks
     for (size_t actIndex = 0; actIndex < actions.size(); actIndex++) {
       release(keys[actIndex]);
     }
-
-    // how long a txn takes
-    duration = ((double) (clock() - start)) / CLOCKS_PER_SEC;
-    printf("fun() took %f seconds to execute \n", duration);
-  };
+  }
 
   /**
    * this is DLE mechanism for concurrency control 
    */
   const void BadgerThread::dleRun() {
-    // start time of this txn
-    clock_t start = clock();
+    // start time of getting locks
+    auto start = std::chrono::system_clock::now();
 
     // get locks for all actions
     std::vector<int> writeActions;
     for (size_t actIndex = 0; actIndex < actions.size(); actIndex++) {
       TxnAction act = actions[actIndex];
-      if (act == READ_O || READ_RW) {
+      if (act == READ) {
         acquire(keys[actIndex], SHARED);
         reocrd_to_lock.insert(std::pair<int, Semantic>(keys[actIndex], SHARED));
       } else if (act == WRITE) {
@@ -79,8 +81,13 @@ namespace littleBadger {
       }
     }
 
+    // latency of getting locks
+    auto end = std::chrono::system_clock::now();
+    std::chrono::duration<double, std::ratio<1>> elapsed_seconds = end - start;
+    setLatency(elapsed_seconds.count());
+
     // read phase / logic operation
-    std::this_thread::sleep_for (std::chrono::milliseconds(sleepCount));
+    std::this_thread::sleep_for(std::chrono::milliseconds(readCount));
     std::vector<Record> privateBuffer;
     for (size_t index = 0; index < writeActions.size(); index++) {
       int actIndex = writeActions[index];
@@ -88,14 +95,7 @@ namespace littleBadger {
       privateBuffer.push_back(newRecord);
     }
 
-    // change RESERVED to PENDDING
-    for (size_t index = 0; index < writeActions.size(); index++) {
-      int actIndex = writeActions[index];
-      acquire(keys[actIndex], PENDING);
-      reocrd_to_lock.insert(std::pair<int, Semantic>(keys[actIndex], PENDING));
-    }
-
-    // change PENDDING to EXCLUSIVE
+    // change RESERVED to EXCLUSIVE, note that PENDING is implicitly handled during the transition
     for (size_t index = 0; index < writeActions.size(); index++) {
       int actIndex = writeActions[index];
       acquire(keys[actIndex], EXCLUSIVE);
@@ -107,15 +107,12 @@ namespace littleBadger {
       int actIndex = writeActions[index];
       switchRecord(keys[actIndex], privateBuffer[index]);
     }
+    std::this_thread::sleep_for(std::chrono::milliseconds(writeCount));
 
     // release locks
     for (size_t actIndex = 0; actIndex < actions.size(); actIndex++) {
       release(keys[actIndex]);
     }
-
-    // how long a txn takes
-    duration = ((double) (clock() - start)) / CLOCKS_PER_SEC;
-    printf("txn took %f seconds to execute \n", duration);
   };
 
   const void BadgerThread::readRecord(int key) {

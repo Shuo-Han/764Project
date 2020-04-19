@@ -16,13 +16,19 @@ namespace littleBadger {
   // semantics for locks, RESERVED and PENDDING are for DLE 
   enum Semantic {UNLOCKED, SHARED, RESERVED, PENDING, EXCLUSIVE};
 
+  /**
+   * this class helps us to build DLE lock mechanism, SHARED modes can coexist with RESERVED mode,
+   * when RENDING mode is acquired, remaining SHARED modes will be purged. Note that the transition
+   * between SHARED modes and EXCLUSIVE mode is actually PENDING mode, once all SHARED modes are
+   * left, the EXCLUSIVE mode is immedately acquired.
+   */
   class LockWrapper {
   public:
+    // indicate the current mode of this lock
     Semantic semantic;
-    // shared mode is for SHARED and X mode for PENDING and EXCLUSIVE
+    // serves SHARED, PENDING, and EXCLUSIVE mode
     std::shared_timed_mutex m;
-    // serves for RESERVED mode, block other RESERVED acquisitions
-    // while allowing more incoming SHARED
+    // serves for RESERVED, block other RESERVED acquisitions while allowing more incoming SHARED
     std::mutex r;
     int sharedRefCount;
 

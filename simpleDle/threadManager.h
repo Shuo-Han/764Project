@@ -13,7 +13,10 @@
 #include <functional>
 #include <stdexcept>
 #include <iostream>
+#include <chrono>
+#include <ctime>  
 #include "badgerThread.h"
+#include "stats.h"
 
 namespace littleBadger {
     
@@ -24,6 +27,7 @@ namespace littleBadger {
   public:
     ThreadManager(size_t);
     
+    void startThreadManager();
     void enqueueObj(BadgerThread);
     
     // template<class F, class... Args> 
@@ -44,6 +48,7 @@ namespace littleBadger {
       // synchronization
       std::condition_variable condition;
       std::mutex queue_mutex;
+      bool start = false;
       bool stop;
   };
 
@@ -62,7 +67,8 @@ namespace littleBadger {
             // [this]{ return this->stop || !this->tasks.empty();} is a function that return ture or false
             // when it return false, then condition.wait(lock, bool) will keep waiting.
             // when it return true, then we can move to next line if the thread receives a notify
-            this->condition.wait(lock, [this]{ return this->stop || !this->tasksO.empty();});
+            this->condition.wait(lock, 
+                                [this]{return this->start && (this->stop || !this->tasksO.empty());});
             if (this->stop && this->tasksO.empty()) {
               std::cout << "thread end" << std::endl; 
               return;
@@ -72,9 +78,18 @@ namespace littleBadger {
             // taskO = &(tasksO.front());
             BadgerThread newTask = tasksO.front();
             this->tasksO.pop();
+
+            // start time of this txn
+            auto start = std::chrono::system_clock::now();
+
             newTask.run();
-            // std::cout << taskO->actions.size() << " 00000" << std::endl;
-            // taskO->run();
+
+            // how long a txn takes
+            auto end = std::chrono::system_clock::now();
+            std::chrono::duration<double, std::ratio<1>> elapsed_seconds = end - start;
+            newTask.duration = elapsed_seconds.count();
+            // std::cout << "txn exe time: " << newTask.duration << std::endl; 
+            setThroughput(newTask.duration);
           }
         }
       );
@@ -106,6 +121,12 @@ namespace littleBadger {
   }
   */
 
+  void ThreadManager::startThreadManager() {
+    // std::cout << "tasksO.size: " << tasksO.size() << std::endl;
+    start = true;
+    condition.notify_all();
+  }
+
   /**
    * when a new task is added to the queue, this queue will notify one thread to execute the task
    */
@@ -131,6 +152,10 @@ namespace littleBadger {
       for (int i = sizeThd - 1; i >= 0; i--) {
           workers[i].join();
       }
+
+      getThroughput();
+      getLatency();
+      std::cout << "finish project" << std::endl; 
   }
 
   /**

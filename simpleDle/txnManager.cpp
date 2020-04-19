@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <set>
 #include "txnManager.h"
+#include "globals.h"
 
 namespace littleBadger {
   // a set of transactions needed to be executed
@@ -12,14 +13,14 @@ namespace littleBadger {
 
   /**
    * this method is used to create a key for operations in txns
-   * keys range from 0-99
+   * keys range from 0-numKeys
    */
   void getKey(std::vector<int> *visit) {
     int actKey; 
-    actKey = rand() % 100; // key
+    actKey = rand() % numKeys; // range of keys
     // if key is already visited, change to another key
     while (std::find(visit->begin(), visit->end(), actKey) != visit->end()) {
-      actKey = rand() % 100; 
+      actKey = rand() % numKeys; 
     }
     visit->push_back(actKey);
 
@@ -35,36 +36,26 @@ namespace littleBadger {
     std::ofstream myfile ("txns.txt");
 
     if (myfile.is_open()) {
-      // there are 5000 txns and 100 records
-      for (int txnID = 0; txnID < 5000; txnID++) {
-        int txnType = 1; // rand() % 2; // 0: read_only case, 1: read_write case
+      // there are 10000 txns and 50 records
+      for (int txnID = 0; txnID < 10000; txnID++) {
         std::vector<int> visit;
 
-        // get 10 keys and make them in order
+        // get 10 keys and sort them for avoiding dead locks in badgerThread
         for (int i = 0; i < 10; i++) {
           getKey(&visit);  
         }
         std::sort(visit.begin(), visit.end());
 
-        // a read only transactoin has 10 read actions on different keys
-        if (txnType == 0) {
-          for (int i = 0; i < 10; i++) {
-            char buffer[30];
-            sprintf(buffer, "%d %s %d %d", txnID, "READ_O", visit[i], 0); 
-            myfile << buffer << std::endl;;
-          }
-        // a read write transactoin has 7 reads and 3 writes
-        } else {
-          for (int i = 0; i < 7; i++) {
-            char buffer[30];
-            sprintf(buffer, "%d %s %d %d", txnID, "READ_RW", visit[i], 0); 
-            myfile << buffer << std::endl;;
-          }
-          for (int i = 7; i < 10; i++) {
-            char buffer[30];
-            sprintf(buffer, "%d %s %d %d", txnID, "WRITE", visit[i], visit[i] + 1); 
-            myfile << buffer << std::endl;;
-          }
+        // 7 read only txns, and 3 read-write txns
+        for (int i = 0; i < ratio; i++) {
+          char buffer[30];
+          sprintf(buffer, "%d %s %d %d", txnID, "READ", visit[i], 0); 
+          myfile << buffer << std::endl;;
+        }
+        for (int i = ratio; i < 10; i++) {
+          char buffer[30];
+          sprintf(buffer, "%d %s %d %d", txnID, "WRITE", visit[i], visit[i] + 1); 
+          myfile << buffer << std::endl;;
         }
 
         visit.clear();
@@ -101,10 +92,8 @@ namespace littleBadger {
 
         // check whether a transaction is valid
         TxnAction action;
-        if (parameters[1].compare("READ_O") == 0) {
-          action = READ_O;
-        } else if (parameters[1].compare("READ_RW") == 0) {
-          action = READ_RW;
+        if (parameters[1].compare("READ") == 0) {
+          action = READ;
         } else if (parameters[1].compare("WRITE") == 0) {
           action = WRITE;
         } else {
