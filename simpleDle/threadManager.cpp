@@ -1,5 +1,6 @@
 #include <iostream>
 #include <chrono>
+#include <ctime>  
 #include "threadManager.h"
 #include "lockManager.h"
 #include "sysStructure.h"
@@ -9,31 +10,27 @@ using namespace littleBadger;
 
   CCAlg alg;
   DLSol sol;
+  int numKeys;
   int sleepCount;
 
 int main(int argc, char **argv) {
-  std::cout << "start project" << std::endl;
+  auto start = std::chrono::system_clock::now();
+  std::time_t start_time = std::chrono::system_clock::to_time_t(start);
+  std::cout << "start project: " << std::ctime(&start_time) << std::endl;
 
   alg = TRAD;
   sol = KILL;
+  numKeys = 50;
   sleepCount = 10;
 
   // init mapStructure
-  initMapStructure();
-  initLockManager(100);
+  initMapStructure(numKeys);
+  initLockManager(numKeys);
 
   // create thread pool with 4 worker threads
-  ThreadManager pool(4);
+  ThreadManager pool(100);
   std::this_thread::sleep_for (std::chrono::seconds (3));
 
-  // load txns.txt and transform them to Txn objects
-  // std::fstream fileStream;
-    // fileStream.open("txns.txt");
-    // if (fileStream.is_open()) {
-    //   std::cout << "txns.txt exists" << std::endl;
-    //   fileStream.close();
-    //   return;
-    // }
   std::cout << "build txns" << std::endl;
   // bulildDataSet();
   buildTxnSet(); 
@@ -43,12 +40,14 @@ int main(int argc, char **argv) {
   // use Txn objects to init BadgerThread objects and enqueue them into thread pool
   for (size_t i = 0; i < txnSet.size(); i++) {
     BadgerThread expThd(txnSet[i]);
-    // std::cout << expThd.actions.size() << " ====" << std::endl;
     pool.enqueueObj(expThd);
   }
 
+  std::cout << "start hanlding txns" << std::endl;
+  pool.startThreadManager();
+
   // end threads
-  // pool.~ThreadPool();
-  std::this_thread::sleep_for (std::chrono::seconds (3));
-  std::cout << "finish project" << std::endl; 
+  auto end = std::chrono::system_clock::now();
+  std::chrono::duration<double> elapsed_seconds = end - start;
+  std::cout << "elapsed time: " << elapsed_seconds.count() << "s\n";
 }

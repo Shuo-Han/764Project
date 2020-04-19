@@ -4,6 +4,7 @@
 #include <string>
 #include <condition_variable>
 #include <time.h>
+#include <chrono>
 #include "txnManager.h"
 #include "lockManager.h"
 #include "sysStructure.h"
