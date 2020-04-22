@@ -23,7 +23,7 @@ int main(int argc, char **argv) {
   std::cout << "start project: " << std::ctime(&start_time) << std::endl;
 
   // global setting
-  alg = DLE;
+  alg = TRAD;
   sol = KILL;
   numKeys = 50;
   ratio = 5;

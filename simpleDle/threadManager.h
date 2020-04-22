@@ -48,6 +48,7 @@ namespace littleBadger {
       // synchronization
       std::condition_variable condition;
       std::mutex queue_mutex;
+      std::mutex write_stat;
       bool start = false;
       bool stop;
   };
@@ -89,8 +90,12 @@ namespace littleBadger {
             auto end = std::chrono::system_clock::now();
             std::chrono::duration<double, std::ratio<1>> elapsed_seconds = end - start;
             newTask.duration = elapsed_seconds.count();
-            // std::cout << "txn exe time: " << newTask.duration << std::endl; 
+            
+            // updata stats 
+            this->write_stat.lock();
             setThroughput(newTask.duration);
+            this->write_stat.unlock();
+
             std::cout << "txn end" << std::endl;
           }
         }
