@@ -73,6 +73,6 @@
     "filesystem": "cpp",
     "condition_variable": "cpp",
     "future": "cpp",
-    "*.tcc": "cpp"
+    // "*.tcc": "cpp"
   }
 }
