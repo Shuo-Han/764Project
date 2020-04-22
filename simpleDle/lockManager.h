@@ -49,7 +49,11 @@ namespace littleBadger {
   const bool acquireDLE(LockWrapper* cur, Semantic s);
 
   // release a lock of a record
-  const bool release(int key);
+  const bool release(int key, Semantic s);
+
+  // helpers for release() 
+  const bool releaseTRAD(int key, Semantic s);
+  const bool releaseDLE(int key, Semantic s);
 
   // check lock status of a record
   const void check(int key);

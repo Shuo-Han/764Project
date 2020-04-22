@@ -42,15 +42,16 @@ namespace littleBadger {
       std::queue<BadgerThread> tasksO; // use in this project, an object = a tack = a transaction
       // std::queue<std::function<void()>> tasks; // notuse in this project
 
-      // BadgerThread pointer is used to get a task from taskO
-      // BadgerThread *taskO;
-
       // synchronization
       std::condition_variable condition;
       std::mutex queue_mutex;
       std::mutex write_stat;
       bool start = false;
       bool stop;
+      
+      // processed tasks and start time
+      int count = 0;
+      std::chrono::system_clock::time_point startTime = std::chrono::system_clock::now();
   };
 
   /**
@@ -64,8 +65,8 @@ namespace littleBadger {
       workers.emplace_back( 
         [this, i]{
           for (;;) {
-            std::unique_lock<std::mutex> lock(this->queue_mutex); // this is a lock that every threads hold
-            // [this]{ return this->stop || !this->tasks.empty();} is a function that return ture or false
+            std::unique_lock<std::mutex> lock(this->queue_mutex); 
+            // [this]{ return this->stop || !this->tasks.empty();} returns ture or false
             // when it return false, then condition.wait(lock, bool) will keep waiting.
             // when it return true, then we can move to next line if the thread receives a notify
             this->condition.wait(lock, 
@@ -94,13 +95,58 @@ namespace littleBadger {
             // updata stats 
             this->write_stat.lock();
             setThroughput(newTask.duration);
+            this->count++;
             this->write_stat.unlock();
 
-            std::cout << "txn end" << std::endl;
+            if (count % 1000 == 0) {
+              std::cout << count << " txn end" << std::endl;
+            }
           }
         }
       );
     }
+  }
+
+  /**
+   * this method wakes threads up to handle queued tasks
+   */
+  void ThreadManager::startThreadManager() {
+    start = true;
+    condition.notify_all();
+  }
+
+  /**
+   * enqueue new task to the queue
+   */
+  void ThreadManager::enqueueObj(BadgerThread bThread) {
+      // don't allow enqueueing after stopping the pool
+      if (stop) {
+          throw std::runtime_error("enqueue on stopped ThreadPool");
+      }
+
+      tasksO.push(bThread);
+  }
+
+  /**
+   * the destructor joins all threads
+   */
+  inline ThreadManager::~ThreadManager() {
+      stop = true;
+      condition.notify_all();
+
+      int sizeThd = workers.size();
+      for (int i = sizeThd - 1; i >= 0; i--) {
+          workers[i].join();
+      }
+
+      std::chrono::system_clock::time_point endTime = std::chrono::system_clock::now();
+      std::chrono::duration<double> elapsed_seconds = endTime - startTime;
+      std::cout << "elapsed time: " << elapsed_seconds.count() << "s\n";
+
+      getThroughput();
+      getLatency();
+
+      std::cout << "finish project" << std::endl; 
   }
 
   /** 
@@ -127,43 +173,6 @@ namespace littleBadger {
       return res;
   }
   */
-
-  void ThreadManager::startThreadManager() {
-    // std::cout << "tasksO.size: " << tasksO.size() << std::endl;
-    start = true;
-    condition.notify_all();
-  }
-
-  /**
-   * when a new task is added to the queue, this queue will notify one thread to execute the task
-   */
-  void ThreadManager::enqueueObj(BadgerThread bThread) {
-      // std::unique_lock<std::mutex> lock(queue_mutex);
-
-      // don't allow enqueueing after stopping the pool
-      if (stop) {
-          throw std::runtime_error("enqueue on stopped ThreadPool");
-      }
-
-      tasksO.push(bThread);
-      // condition.notify_one();
-  }
-
-  // the destructor joins all threads
-  inline ThreadManager::~ThreadManager() {
-      // std::unique_lock<std::mutex> lock(queue_mutex);
-      stop = true;
-      condition.notify_all();
-
-      int sizeThd = workers.size();
-      for (int i = sizeThd - 1; i >= 0; i--) {
-          workers[i].join();
-      }
-
-      getThroughput();
-      getLatency();
-      std::cout << "finish project" << std::endl; 
-  }
 
   /**
    * std::condition_variable

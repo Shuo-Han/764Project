@@ -52,7 +52,11 @@ namespace littleBadger {
 
     // release locks
     for (size_t actIndex = 0; actIndex < actions.size(); actIndex++) {
-      release(keys[actIndex]);
+      if (actions[actIndex] == READ) {
+        release(keys[actIndex], SHARED);
+      } else if (actions[actIndex] == WRITE) {
+        release(keys[actIndex], EXCLUSIVE);
+      }
     }
   }
 
@@ -63,17 +67,12 @@ namespace littleBadger {
     // start time of getting locks
     auto start = std::chrono::system_clock::now();
 
-    // get locks for all actions
-    std::vector<int> writeActions;
+    // get locks for READ actions
     for (size_t actIndex = 0; actIndex < actions.size(); actIndex++) {
       TxnAction act = actions[actIndex];
       if (act == READ) {
         acquire(keys[actIndex], SHARED);
-        std::cout << threadId << " SHARED " << keys[actIndex] << std::endl;
-      } else if (act == WRITE) {
-        writeActions.push_back(actIndex);
-        acquire(keys[actIndex], RESERVED);
-      }
+      } 
     }
 
     // latency of getting locks
@@ -81,8 +80,27 @@ namespace littleBadger {
     std::chrono::duration<double, std::ratio<1>> elapsed_seconds = end - start;
     setLatency(elapsed_seconds.count());
 
-    // read phase / logic operation
+    // read phase for 
     std::this_thread::sleep_for(std::chrono::milliseconds(readCount));
+
+    // release / logic operation for READ actions
+    for (size_t actIndex = 0; actIndex < actions.size(); actIndex++) {
+      if (actions[actIndex] == READ) {
+        release(keys[actIndex], SHARED);
+      }
+    }
+
+    // get locks for WRITE actions
+    std::vector<int> writeActions;
+    for (size_t actIndex = 0; actIndex < actions.size(); actIndex++) {
+      TxnAction act = actions[actIndex];
+      if (act == WRITE) {
+        writeActions.push_back(actIndex);
+        acquire(keys[actIndex], RESERVED);
+      }
+    }
+
+    // read phase / logic operation for WRITE actions
     std::vector<Record> privateBuffer;
     for (size_t index = 0; index < writeActions.size(); index++) {
       int actIndex = writeActions[index];
@@ -94,7 +112,6 @@ namespace littleBadger {
     for (size_t index = 0; index < writeActions.size(); index++) {
       int actIndex = writeActions[index];
       acquire(keys[actIndex], EXCLUSIVE);
-      std::cout << threadId << " EXCLUSIVE " << keys[actIndex] << std::endl;
     }
 
     // end of commit phase 
@@ -104,10 +121,11 @@ namespace littleBadger {
     }
     std::this_thread::sleep_for(std::chrono::milliseconds(writeCount));
 
-    // release locks
+    // release EXCLUSIVE locks
     for (size_t actIndex = 0; actIndex < actions.size(); actIndex++) {
-      release(keys[actIndex]);
-      std::cout << threadId << " RELEASE " << keys[actIndex] << std::endl;
+      if (actions[actIndex] == WRITE) {
+        release(keys[actIndex], EXCLUSIVE);
+      }
     }
   };
 

@@ -6,7 +6,7 @@ enum CCAlg {DLE, TRAD};
 enum DLSol {WAIT, KILL};
 
 extern CCAlg alg;
-extern DLSol sol;
+extern DLSol sol; // not used ... haven't implemented this mechanism
 extern int numKeys; // control the number of records
 extern int ratio; // ratio = 5 means 5 reads and 5 writes, ratio = 7 means 7 reads and 3 writes
 extern int numThread; // number of threads in thread pool
