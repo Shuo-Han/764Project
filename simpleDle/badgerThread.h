@@ -31,13 +31,13 @@ namespace littleBadger {
     };
 
     // the basic function for a BadgerThread to exectue a transaction
-    const void run();
+    const void run(int threadId);
 
     // BadgerThread executes a transaction in a traditional lock way
     const void tradRun();
 
     // BadgerThread executes a transaction in a dle lock way
-    const void dleRun();
+    const void dleRun(int threadId);
 
     // BadgerThread executes a read transaction 
     const void readRecord(int key);

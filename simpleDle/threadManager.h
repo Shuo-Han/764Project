@@ -58,11 +58,10 @@ namespace littleBadger {
    */
   inline ThreadManager::ThreadManager(size_t maxThds) : stop(false) {
     for (size_t i = 0; i < maxThds; ++i) {
-      std::cout << "worker " << i << std::endl; 
       // emplace_back = construct an element in place using args as the arguments for its 
       // constructor and insert element at the end
       workers.emplace_back( 
-        [this]{
+        [this, i]{
           for (;;) {
             std::unique_lock<std::mutex> lock(this->queue_mutex); // this is a lock that every threads hold
             // [this]{ return this->stop || !this->tasks.empty();} is a function that return ture or false
@@ -84,7 +83,7 @@ namespace littleBadger {
 
             // start time of this txn
             auto start = std::chrono::system_clock::now();
-            newTask.run();
+            newTask.run(i);
 
             // how long a txn takes
             auto end = std::chrono::system_clock::now();
@@ -92,7 +91,7 @@ namespace littleBadger {
             newTask.duration = elapsed_seconds.count();
             // std::cout << "txn exe time: " << newTask.duration << std::endl; 
             setThroughput(newTask.duration);
-            std::cout << "??" << std::endl;
+            std::cout << "txn end" << std::endl;
           }
         }
       );

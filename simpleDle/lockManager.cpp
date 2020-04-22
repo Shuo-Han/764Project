@@ -42,7 +42,7 @@ namespace littleBadger {
   const bool acquire(int key, Semantic s) {
     LockWrapper* curLock = &lockManager.find(key)->second;
     if(alg == TRAD)
-      return acquireTRAD(curLock, s, key);
+      return acquireTRAD(curLock, s);
     else if(alg == DLE)
       return acquireDLE(curLock, s);
     
@@ -53,7 +53,7 @@ namespace littleBadger {
   /**
    * this method lets a txn/thread to acquire traditional locks
    */
-  const bool acquireTRAD(LockWrapper* cur, Semantic s, int key) {
+  const bool acquireTRAD(LockWrapper* cur, Semantic s) {
     if (s == SHARED) {
       cur->m.lock_shared();
       cur->semantic = SHARED;
@@ -62,7 +62,6 @@ namespace littleBadger {
     } else if (s == EXCLUSIVE) {
       cur->m.lock();
       cur->semantic = EXCLUSIVE;
-      std::cout << "EXCLUSIVE granted: " << key << std::endl; 
       return true;
     }
     std::cout << Semantic(s) << " lock not allowed under TRAD mode\n";
@@ -92,13 +91,13 @@ namespace littleBadger {
     case PENDING:
       throw std::runtime_error(
         std::string("illegal acquire: PENDING is implicitly handled while acquiring EXCLUSIVE"));
-    // a EXCLUSIVE lock is acquired in a chain from RESERVED to PENDING, then EXCLUSIVE
+    // an EXCLUSIVE lock is acquired in a chain from RESERVED to PENDING, then EXCLUSIVE
     case EXCLUSIVE:
       while (cur->semantic != RESERVED) {
         throw std::runtime_error(
           std::string("illegal acquire: expected RESERVED but", Semantic(cur->semantic)));
       }
-      cur->semantic = PENDING;
+      // cur->semantic = PENDING;
       cur->m.lock();
       cur->semantic = EXCLUSIVE;
       return true;
@@ -117,24 +116,27 @@ namespace littleBadger {
       case UNLOCKED: 
         throw std::runtime_error(std::string("illegal release: UNLOCKED " + std::to_string(key)));
       case SHARED:
-        curLock->m.unlock_shared();
         if (curLock->sharedRefCount-- == 0) {
           curLock->semantic = UNLOCKED;
         }
+        curLock->m.unlock_shared();
         return true;
       case RESERVED:
-        throw std::runtime_error(std::string("illegal release: RESERVED"));
-      case PENDING:
-        throw std::runtime_error(std::string("illegal release: PENDING"));
+        curLock->m.unlock_shared();
+        return true;
+        // throw std::runtime_error(std::string("illegal release: RESERVED ") + std::to_string(key));
+      // case PENDING:
+      //   curLock->m.unlock_shared();
+      //   return true;
+        // throw std::runtime_error(std::string("illegal release: PENDING ") + std::to_string(key));
       // DLE uses r for RESERVED, and m for SHARED, PENDING, and EXCLUSIVE 
       // TRAD only uses m for SHARED and EXCLUSIVE
       case EXCLUSIVE:
-        std::cout << "EXCLUSIVE release: " << std::to_string(key) << std::endl;
+        curLock->semantic = UNLOCKED;
         curLock->m.unlock();
         if (alg == DLE) {
           curLock->r.unlock();
         }
-        curLock->semantic = UNLOCKED;
         return true;
       default:
         std::cout << "Unhandled lock mode " << Semantic(curLock->semantic) << " \n";

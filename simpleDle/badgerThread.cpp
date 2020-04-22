@@ -10,9 +10,9 @@ namespace littleBadger {
   /**
    * this function decides the way of how a BadgerThread cooperates with the others.
    */
-  const void BadgerThread::run() {
+  const void BadgerThread::run(int threadId) {
     if (alg == DLE) {
-      dleRun();
+      dleRun(threadId);
     } else if (alg == TRAD) {
       tradRun();
     }
@@ -31,7 +31,6 @@ namespace littleBadger {
       if (act == READ) {
         acquire(keys[actIndex], SHARED);
       } else if (act == WRITE) {
-        std::cout << "acquire x: " << keys[actIndex] << std::endl;
         writeActions.push_back(actIndex);
         acquire(keys[actIndex], EXCLUSIVE);
       }
@@ -52,16 +51,15 @@ namespace littleBadger {
     std::this_thread::sleep_for(std::chrono::milliseconds(writeCount));
 
     // release locks
-    for (size_t actIndex = 0; actIndex < writeActions.size(); actIndex++) {
-      std::cout << "release x: " << keys[writeActions[actIndex]] << std::endl;
-      release(keys[writeActions[actIndex]]);
+    for (size_t actIndex = 0; actIndex < actions.size(); actIndex++) {
+      release(keys[actIndex]);
     }
   }
 
   /**
    * this is DLE mechanism for concurrency control 
    */
-  const void BadgerThread::dleRun() {
+  const void BadgerThread::dleRun(int threadId) {
     // start time of getting locks
     auto start = std::chrono::system_clock::now();
 
@@ -71,6 +69,7 @@ namespace littleBadger {
       TxnAction act = actions[actIndex];
       if (act == READ) {
         acquire(keys[actIndex], SHARED);
+        std::cout << threadId << " SHARED " << keys[actIndex] << std::endl;
       } else if (act == WRITE) {
         writeActions.push_back(actIndex);
         acquire(keys[actIndex], RESERVED);
@@ -95,6 +94,7 @@ namespace littleBadger {
     for (size_t index = 0; index < writeActions.size(); index++) {
       int actIndex = writeActions[index];
       acquire(keys[actIndex], EXCLUSIVE);
+      std::cout << threadId << " EXCLUSIVE " << keys[actIndex] << std::endl;
     }
 
     // end of commit phase 
@@ -107,6 +107,7 @@ namespace littleBadger {
     // release locks
     for (size_t actIndex = 0; actIndex < actions.size(); actIndex++) {
       release(keys[actIndex]);
+      std::cout << threadId << " RELEASE " << keys[actIndex] << std::endl;
     }
   };
 

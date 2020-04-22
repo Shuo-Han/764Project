@@ -45,7 +45,7 @@ namespace littleBadger {
   const bool acquire(int key, Semantic s);
 
   // helpers for acquire() 
-  const bool acquireTRAD(LockWrapper* cur, Semantic s, int key);
+  const bool acquireTRAD(LockWrapper* cur, Semantic s);
   const bool acquireDLE(LockWrapper* cur, Semantic s);
 
   // release a lock of a record

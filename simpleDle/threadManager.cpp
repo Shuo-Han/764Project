@@ -23,7 +23,7 @@ int main(int argc, char **argv) {
   std::cout << "start project: " << std::ctime(&start_time) << std::endl;
 
   // global setting
-  alg = TRAD;
+  alg = DLE;
   sol = KILL;
   numKeys = 50;
   ratio = 5;
@@ -40,7 +40,7 @@ int main(int argc, char **argv) {
   std::this_thread::sleep_for (std::chrono::seconds (3));
 
   std::cout << "build txns" << std::endl;
-  // bulildDataSet(); // uncomment this line to build a new txns.txt with ratiom
+  bulildDataSet(); // uncomment this line to build a new txns.txt with ratiom
   buildTxnSet(); 
   std::vector<Txn> txnSet = readTxnSet();
   std::cout << txnSet.size() << " finish building txnSet" << std::endl;
