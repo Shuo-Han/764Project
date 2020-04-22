@@ -58,6 +58,7 @@ namespace littleBadger {
    */
   inline ThreadManager::ThreadManager(size_t maxThds) : stop(false) {
     for (size_t i = 0; i < maxThds; ++i) {
+      std::cout << "worker " << i << std::endl; 
       // emplace_back = construct an element in place using args as the arguments for its 
       // constructor and insert element at the end
       workers.emplace_back( 
@@ -69,6 +70,7 @@ namespace littleBadger {
             // when it return true, then we can move to next line if the thread receives a notify
             this->condition.wait(lock, 
                                 [this]{return this->start && (this->stop || !this->tasksO.empty());});
+
             if (this->stop && this->tasksO.empty()) {
               std::cout << "thread end" << std::endl; 
               return;
@@ -78,10 +80,10 @@ namespace littleBadger {
             // taskO = &(tasksO.front());
             BadgerThread newTask = tasksO.front();
             this->tasksO.pop();
+            lock.unlock();
 
             // start time of this txn
             auto start = std::chrono::system_clock::now();
-
             newTask.run();
 
             // how long a txn takes
@@ -90,6 +92,7 @@ namespace littleBadger {
             newTask.duration = elapsed_seconds.count();
             // std::cout << "txn exe time: " << newTask.duration << std::endl; 
             setThroughput(newTask.duration);
+            std::cout << "??" << std::endl;
           }
         }
       );
@@ -131,7 +134,7 @@ namespace littleBadger {
    * when a new task is added to the queue, this queue will notify one thread to execute the task
    */
   void ThreadManager::enqueueObj(BadgerThread bThread) {
-      std::unique_lock<std::mutex> lock(queue_mutex);
+      // std::unique_lock<std::mutex> lock(queue_mutex);
 
       // don't allow enqueueing after stopping the pool
       if (stop) {
@@ -139,7 +142,7 @@ namespace littleBadger {
       }
 
       tasksO.push(bThread);
-      condition.notify_one();
+      // condition.notify_one();
   }
 
   // the destructor joins all threads

@@ -30,11 +30,10 @@ namespace littleBadger {
       TxnAction act = actions[actIndex];
       if (act == READ) {
         acquire(keys[actIndex], SHARED);
-        reocrd_to_lock.insert(std::pair<int, Semantic>(keys[actIndex], SHARED));
       } else if (act == WRITE) {
+        std::cout << "acquire x: " << keys[actIndex] << std::endl;
         writeActions.push_back(actIndex);
         acquire(keys[actIndex], EXCLUSIVE);
-        reocrd_to_lock.insert(std::pair<int, Semantic>(keys[actIndex], EXCLUSIVE));
       }
     }
 
@@ -48,15 +47,14 @@ namespace littleBadger {
 
     // commit phase 
     for (size_t actIndex = 0; actIndex < writeActions.size(); actIndex++) {
-      if (actions[writeActions[actIndex]] == WRITE) {
-        writeRecord(keys[writeActions[actIndex]], values[writeActions[actIndex]]);
-      }
+      writeRecord(keys[writeActions[actIndex]], values[writeActions[actIndex]]);
     }
     std::this_thread::sleep_for(std::chrono::milliseconds(writeCount));
 
     // release locks
-    for (size_t actIndex = 0; actIndex < actions.size(); actIndex++) {
-      release(keys[actIndex]);
+    for (size_t actIndex = 0; actIndex < writeActions.size(); actIndex++) {
+      std::cout << "release x: " << keys[writeActions[actIndex]] << std::endl;
+      release(keys[writeActions[actIndex]]);
     }
   }
 
@@ -73,11 +71,9 @@ namespace littleBadger {
       TxnAction act = actions[actIndex];
       if (act == READ) {
         acquire(keys[actIndex], SHARED);
-        reocrd_to_lock.insert(std::pair<int, Semantic>(keys[actIndex], SHARED));
       } else if (act == WRITE) {
         writeActions.push_back(actIndex);
         acquire(keys[actIndex], RESERVED);
-        reocrd_to_lock.insert(std::pair<int, Semantic>(keys[actIndex], RESERVED));
       }
     }
 
@@ -99,7 +95,6 @@ namespace littleBadger {
     for (size_t index = 0; index < writeActions.size(); index++) {
       int actIndex = writeActions[index];
       acquire(keys[actIndex], EXCLUSIVE);
-      reocrd_to_lock.insert(std::pair<int, Semantic>(keys[actIndex], EXCLUSIVE));
     }
 
     // end of commit phase 

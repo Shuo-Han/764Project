@@ -42,7 +42,7 @@ namespace littleBadger {
   const bool acquire(int key, Semantic s) {
     LockWrapper* curLock = &lockManager.find(key)->second;
     if(alg == TRAD)
-      return acquireTRAD(curLock, s);
+      return acquireTRAD(curLock, s, key);
     else if(alg == DLE)
       return acquireDLE(curLock, s);
     
@@ -53,7 +53,7 @@ namespace littleBadger {
   /**
    * this method lets a txn/thread to acquire traditional locks
    */
-  const bool acquireTRAD(LockWrapper* cur, Semantic s) {
+  const bool acquireTRAD(LockWrapper* cur, Semantic s, int key) {
     if (s == SHARED) {
       cur->m.lock_shared();
       cur->semantic = SHARED;
@@ -62,6 +62,7 @@ namespace littleBadger {
     } else if (s == EXCLUSIVE) {
       cur->m.lock();
       cur->semantic = EXCLUSIVE;
+      std::cout << "EXCLUSIVE granted: " << key << std::endl; 
       return true;
     }
     std::cout << Semantic(s) << " lock not allowed under TRAD mode\n";
@@ -114,7 +115,7 @@ namespace littleBadger {
     Semantic hardenSemantic = curLock->semantic;
     switch (hardenSemantic) {
       case UNLOCKED: 
-        throw std::runtime_error(std::string("illegal release: UNLOCKED"));
+        throw std::runtime_error(std::string("illegal release: UNLOCKED " + std::to_string(key)));
       case SHARED:
         curLock->m.unlock_shared();
         if (curLock->sharedRefCount-- == 0) {
@@ -128,6 +129,7 @@ namespace littleBadger {
       // DLE uses r for RESERVED, and m for SHARED, PENDING, and EXCLUSIVE 
       // TRAD only uses m for SHARED and EXCLUSIVE
       case EXCLUSIVE:
+        std::cout << "EXCLUSIVE release: " << std::to_string(key) << std::endl;
         curLock->m.unlock();
         if (alg == DLE) {
           curLock->r.unlock();

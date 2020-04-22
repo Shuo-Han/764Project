@@ -18,7 +18,6 @@ namespace littleBadger {
   class BadgerThread {
   public:
     // parameters of a transaction
-    std::map<int, Semantic> reocrd_to_lock; // a record is represented by a key 
     std::vector<TxnAction> actions;
     std::vector<int> keys;
     std::vector<std::string> values;
