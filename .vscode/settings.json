@@ -72,6 +72,7 @@
     "vector": "cpp",
     "filesystem": "cpp",
     "condition_variable": "cpp",
-    "future": "cpp"
+    "future": "cpp",
+    // "*.tcc": "cpp"
   }
 }

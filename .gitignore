@@ -1,2 +1,6 @@
 .DS_Store
 a.out
+*.o
+test.cpp
+run.sh
+txns.txt
