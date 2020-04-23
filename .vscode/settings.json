@@ -73,6 +73,22 @@
     "filesystem": "cpp",
     "condition_variable": "cpp",
     "future": "cpp",
-    // "*.tcc": "cpp"
+    "*.tcc": "cpp",
+    "cfenv": "cpp",
+    "cinttypes": "cpp",
+    "clocale": "cpp",
+    "codecvt": "cpp",
+    "csetjmp": "cpp",
+    "csignal": "cpp",
+    "cuchar": "cpp",
+    "forward_list": "cpp",
+    "unordered_set": "cpp",
+    "memory_resource": "cpp",
+    "numeric": "cpp",
+    "random": "cpp",
+    "regex": "cpp",
+    "scoped_allocator": "cpp",
+    "typeindex": "cpp",
+    "valarray": "cpp"
   }
 }

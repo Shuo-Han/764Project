@@ -3,4 +3,4 @@ a.out
 *.o
 test.cpp
 run.sh
-txns.txt
+littleBadger_main
