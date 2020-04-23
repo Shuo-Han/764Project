@@ -123,6 +123,8 @@ namespace littleBadger {
       cur->m.lock();
       return true;
     }
+
+    return false;
   }
 
   /**

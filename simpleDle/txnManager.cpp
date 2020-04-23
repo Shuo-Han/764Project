@@ -32,12 +32,12 @@ namespace littleBadger {
    * each lin of txns.txt is like: txnID READ_O key value
    */
   const void bulildDataSet() {
-    std::cout << "start building data set" << std::endl;
+    // std::cout << "start building data set" << std::endl;
     std::ofstream myfile ("txns.txt");
 
     if (myfile.is_open()) {
       // there are 10000 txns and 50 records
-      for (int txnID = 0; txnID < 10000; txnID++) {
+      for (int txnID = 0; txnID < 5000; txnID++) {
         std::vector<int> visit;
 
         // get 10 keys and sort them for avoiding dead locks in badgerThread
@@ -64,7 +64,7 @@ namespace littleBadger {
       std::cout << "unable to open txns.txt" << std::endl;
     }
     
-    std::cout << "finish building data set" << std::endl;
+    // std::cout << "finish building data set" << std::endl;
     myfile.close();
   }
 

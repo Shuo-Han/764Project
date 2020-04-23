@@ -16,6 +16,7 @@
 #include <chrono>
 #include <ctime>  
 #include "badgerThread.h"
+#include "sysStructure.h"
 #include "stats.h"
 
 namespace littleBadger {
@@ -73,7 +74,7 @@ namespace littleBadger {
                                 [this]{return this->start && (this->stop || !this->tasksO.empty());});
 
             if (this->stop && this->tasksO.empty()) {
-              std::cout << "thread end" << std::endl; 
+              // std::cout << "thread end" << std::endl; 
               return;
             } 
 
@@ -98,9 +99,9 @@ namespace littleBadger {
             this->count++;
             this->write_stat.unlock();
 
-            if (count % 1000 == 0) {
-              std::cout << count << " txn end" << std::endl;
-            }
+            // if (count % 1000 == 0) {
+            //   std::cout << count << " txn end" << std::endl;
+            // }
           }
         }
       );
@@ -146,7 +147,9 @@ namespace littleBadger {
       getThroughput();
       getLatency();
 
-      std::cout << "finish project" << std::endl; 
+      freeAllMapValue();
+
+      // std::cout << "finish project" << std::endl; 
   }
 
   /** 

@@ -30,4 +30,7 @@ namespace littleBadger {
 
   // remove a pair based on the given key
   const void deleteMap(int key);
+
+  // free Record*
+  const void freeAllMapValue();
 }
