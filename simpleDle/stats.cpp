@@ -25,7 +25,7 @@ namespace littleBadger {
   }
 
   const void getThroughput() {
-    printf("#txn: %d, totalExecutionSeconds %f \n", countTxn, exectuionTime);
+    printf("#txn: %d, totalExecutionSeconds %f ", countTxn, exectuionTime);
     // printf("throughput: %f txn/second \n", countTxn / exectuionTime);
   }
 }

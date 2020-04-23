@@ -46,7 +46,7 @@ namespace littleBadger {
     const void writeRecord(int key, std::string value);
 
     // BadgerThread executes a pointer switch for updating record by private buffer
-    const void switchRecord(int key, Record record);
+    const void switchRecord(int key, Record* record);
 
     // BadgerThread executes a delete transaction 
     const void deleteRecord(int key);

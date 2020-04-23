@@ -24,29 +24,29 @@ arg5: readcount
 arg6: writecount
 */
 int main(int argc, char **argv) {
-  // if (argc != 7){
-  //   std::cout << "wrong argc\n";
-  //   return 1;
-  // }
+  if (argc != 7){
+    std::cout << "wrong argc\n";
+    return 1;
+  }
   
-  // // global setting
-  // if (argv[1][0] == '0'){
-  //   alg = TRAD;
-  // } else {
-  //   alg = DLE;
-  // }
+  // global setting
+  if (argv[1][0] == '0'){
+    alg = TRAD;
+  } else {
+    alg = DLE;
+  }
   
-  // numKeys = atoi(argv[2]);
-  // ratio = atoi(argv[3]);
-  // numThread = atoi(argv[4]);
-  // readCount = atoi(argv[5]);
-  // writeCount = atoi(argv[6]);
-  alg = DLE;
-  numKeys = 50;
-  ratio = 0;
-  numThread = 10;
-  readCount = 5;
-  writeCount = 1;
+  numKeys = atoi(argv[2]);
+  ratio = atoi(argv[3]);
+  numThread = atoi(argv[4]);
+  readCount = atoi(argv[5]);
+  writeCount = atoi(argv[6]);
+  // alg = DLE;
+  // numKeys = 50;
+  // ratio = 0;
+  // numThread = 10;
+  // readCount = 5;
+  // writeCount = 1;
 
   // init mapStructure
   initMapStructure(numKeys);
@@ -58,7 +58,7 @@ int main(int argc, char **argv) {
   std::this_thread::sleep_for (std::chrono::seconds (3));
 
   // std::cout << "build txns" << std::endl;
-  bulildDataSet(); // uncomment this line to build a new txns.txt with ratiom
+  // bulildDataSet(); // uncommreaent this line to build a new txns.txt with ratiom
   buildTxnSet(); 
   std::vector<Txn> txnSet = readTxnSet();
   // std::cout << txnSet.size() << " finish building txnSet" << std::endl;

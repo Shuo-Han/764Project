@@ -2,5 +2,5 @@
 a.out
 *.o
 test.cpp
-run.sh
+demo.sh
 littleBadger_main

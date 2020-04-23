@@ -1,48 +1,109 @@
 Start test:
 
-Examine ratio:
+-------------Examine ratio---------------:
 Algo 0, numKeys 50, ratio 0, numThread 10, readCount 5, writeCount: 1
-elapsed time: 37.2644s
-#txn: 5000, totalExecutionSeconds 340.189719 
-ttlLatency 302.122415s, maxLatency: 0.653147s, minLatency 0.000003s 
+time elapsed: 37.5349s#txn: 5000, totalExecutionSeconds 343.679150 ttlLatency 304.997390s, maxLatency: 0.608509s, minLatency 0.000003s 
 Algo 0, numKeys 50, ratio 1, numThread 10, readCount 5, writeCount: 1
-elapsed time: 36.519s
-#txn: 5000, totalExecutionSeconds 332.718393 
-ttlLatency 294.622183s, maxLatency: 1.149217s, minLatency 0.000003s 
+time elapsed: 37.4914s#txn: 5000, totalExecutionSeconds 343.285475 ttlLatency 304.587668s, maxLatency: 0.663466s, minLatency 0.000003s 
 Algo 0, numKeys 50, ratio 2, numThread 10, readCount 5, writeCount: 1
-elapsed time: 35.542s
-#txn: 5000, totalExecutionSeconds 322.942940 
-ttlLatency 284.768845s, maxLatency: 3.288744s, minLatency 0.000003s 
+time elapsed: 38.2622s#txn: 5000, totalExecutionSeconds 351.004307 ttlLatency 311.595102s, maxLatency: 0.578557s, minLatency 0.000003s 
 Algo 0, numKeys 50, ratio 3, numThread 10, readCount 5, writeCount: 1
-elapsed time: 34.543s
-#txn: 5000, totalExecutionSeconds 312.977395 
-ttlLatency 274.264692s, maxLatency: 3.150992s, minLatency 0.000003s 
+time elapsed: 38.058s#txn: 5000, totalExecutionSeconds 348.963034 ttlLatency 309.604393s, maxLatency: 0.869650s, minLatency 0.000003s 
 Algo 0, numKeys 50, ratio 4, numThread 10, readCount 5, writeCount: 1
-elapsed time: 32.742s
-#txn: 5000, totalExecutionSeconds 295.035552 
-ttlLatency 257.011067s, maxLatency: 2.493323s, minLatency 0.000003s 
+time elapsed: 38.2198s#txn: 5000, totalExecutionSeconds 350.588205 ttlLatency 311.219128s, maxLatency: 0.695590s, minLatency 0.000003s 
 Algo 0, numKeys 50, ratio 5, numThread 10, readCount 5, writeCount: 1
-elapsed time: 30.1162s
-#txn: 5000, totalExecutionSeconds 268.727443 
-ttlLatency 230.710136s, maxLatency: 1.444315s, minLatency 0.000003s 
+time elapsed: 38.3937s#txn: 5000, totalExecutionSeconds 352.313022 ttlLatency 312.949269s, maxLatency: 0.767223s, minLatency 0.000003s 
 Algo 0, numKeys 50, ratio 6, numThread 10, readCount 5, writeCount: 1
-elapsed time: 27.6724s
-#txn: 5000, totalExecutionSeconds 244.304634 
-ttlLatency 206.186996s, maxLatency: 1.939060s, minLatency 0.000002s 
+time elapsed: 38.2251s#txn: 5000, totalExecutionSeconds 350.628439 ttlLatency 311.252434s, maxLatency: 0.645533s, minLatency 0.000003s 
 Algo 0, numKeys 50, ratio 7, numThread 10, readCount 5, writeCount: 1
-elapsed time: 25.7645s
-#txn: 5000, totalExecutionSeconds 225.325592 
-ttlLatency 186.418344s, maxLatency: 1.188583s, minLatency 0.000002s 
+time elapsed: 38.1906s#txn: 5000, totalExecutionSeconds 350.297507 ttlLatency 310.904569s, maxLatency: 0.811191s, minLatency 0.000003s 
 Algo 0, numKeys 50, ratio 8, numThread 10, readCount 5, writeCount: 1
-elapsed time: 21.6645s
-#txn: 5000, totalExecutionSeconds 184.332706 
-ttlLatency 145.315532s, maxLatency: 0.838746s, minLatency 0.000002s 
+time elapsed: 38.4736s#txn: 5000, totalExecutionSeconds 353.107160 ttlLatency 313.674706s, maxLatency: 0.897005s, minLatency 0.000003s 
 Algo 0, numKeys 50, ratio 9, numThread 10, readCount 5, writeCount: 1
-elapsed time: 15.8439s
-#txn: 5000, totalExecutionSeconds 126.148521 
-ttlLatency 87.624595s, maxLatency: 0.324395s, minLatency 0.000002s 
+time elapsed: 38.1191s#txn: 5000, totalExecutionSeconds 349.562801 ttlLatency 310.299616s, maxLatency: 0.565170s, minLatency 0.000003s 
 Algo 0, numKeys 50, ratio 10, numThread 10, readCount 5, writeCount: 1
-elapsed time: 6.99539s
-#txn: 5000, totalExecutionSeconds 37.845047 
-ttlLatency 0.011844s, maxLatency: 0.000121s, minLatency 0.000001s 
+time elapsed: 38.3479s#txn: 5000, totalExecutionSeconds 351.824879 ttlLatency 312.325476s, maxLatency: 0.673413s, minLatency 0.000003s 
+Algo 1, numKeys 50, ratio 0, numThread 10, readCount 5, writeCount: 1
+time elapsed: 11.7991s#txn: 5000, totalExecutionSeconds 86.630875 ttlLatency 0.000414s, maxLatency: 0.000000s, minLatency 0.000000s 
+Algo 1, numKeys 50, ratio 1, numThread 10, readCount 5, writeCount: 1
+time elapsed: 11.8008s#txn: 5000, totalExecutionSeconds 86.621383 ttlLatency 0.000414s, maxLatency: 0.000000s, minLatency 0.000000s 
+Algo 1, numKeys 50, ratio 2, numThread 10, readCount 5, writeCount: 1
+time elapsed: 11.8305s#txn: 5000, totalExecutionSeconds 86.950774 ttlLatency 0.000414s, maxLatency: 0.000000s, minLatency 0.000000s 
+Algo 1, numKeys 50, ratio 3, numThread 10, readCount 5, writeCount: 1
+time elapsed: 11.7728s#txn: 5000, totalExecutionSeconds 86.345812 ttlLatency 0.000414s, maxLatency: 0.000000s, minLatency 0.000000s 
+Algo 1, numKeys 50, ratio 4, numThread 10, readCount 5, writeCount: 1
+time elapsed: 11.875s#txn: 5000, totalExecutionSeconds 87.401514 ttlLatency 0.000413s, maxLatency: 0.000000s, minLatency 0.000000s 
+Algo 1, numKeys 50, ratio 5, numThread 10, readCount 5, writeCount: 1
+time elapsed: 11.8604s#txn: 5000, totalExecutionSeconds 87.240541 ttlLatency 0.000412s, maxLatency: 0.000000s, minLatency 0.000000s 
+Algo 1, numKeys 50, ratio 6, numThread 10, readCount 5, writeCount: 1
+time elapsed: 11.8708s#txn: 5000, totalExecutionSeconds 87.354638 ttlLatency 0.000454s, maxLatency: 0.000040s, minLatency 0.000000s 
+Algo 1, numKeys 50, ratio 7, numThread 10, readCount 5, writeCount: 1
+time elapsed: 11.8425s#txn: 5000, totalExecutionSeconds 87.098390 ttlLatency 0.000414s, maxLatency: 0.000000s, minLatency 0.000000s 
+Algo 1, numKeys 50, ratio 8, numThread 10, readCount 5, writeCount: 1
+time elapsed: 11.8478s#txn: 5000, totalExecutionSeconds 87.103457 ttlLatency 0.000413s, maxLatency: 0.000000s, minLatency 0.000000s 
+Algo 1, numKeys 50, ratio 9, numThread 10, readCount 5, writeCount: 1
+time elapsed: 11.8402s#txn: 5000, totalExecutionSeconds 87.027529 ttlLatency 0.000415s, maxLatency: 0.000000s, minLatency 0.000000s 
+Algo 1, numKeys 50, ratio 10, numThread 10, readCount 5, writeCount: 1
+time elapsed: 11.8743s#txn: 5000, totalExecutionSeconds 87.363936 ttlLatency 0.000415s, maxLatency: 0.000000s, minLatency 0.000000s 
 
+-------------Examine readCount---------------:
+Algo 0, numKeys 50, ratio 5, numThread 10, readCount 1, writeCount: 1
+time elapsed: 20.497s#txn: 5000, totalExecutionSeconds 173.514340 ttlLatency 153.987138s, maxLatency: 0.378426s, minLatency 0.000003s 
+Algo 0, numKeys 50, ratio 5, numThread 10, readCount 5, writeCount: 1
+time elapsed: 38.3901s#txn: 5000, totalExecutionSeconds 352.273453 ttlLatency 312.755059s, maxLatency: 0.601452s, minLatency 0.000003s 
+Algo 0, numKeys 50, ratio 5, numThread 10, readCount 10, writeCount: 1
+time elapsed: 60.4694s#txn: 5000, totalExecutionSeconds 572.845242 ttlLatency 508.379883s, maxLatency: 1.041987s, minLatency 0.000003s 
+Algo 0, numKeys 50, ratio 5, numThread 10, readCount 20, writeCount: 1
+time elapsed: 105.07s#txn: 5000, totalExecutionSeconds 1018.410766 ttlLatency 904.092392s, maxLatency: 1.832685s, minLatency 0.000003s 
+Algo 0, numKeys 50, ratio 5, numThread 10, readCount 50, writeCount: 1
+time elapsed: 237.739s#txn: 5000, totalExecutionSeconds 2343.724701 ttlLatency 2079.560035s, maxLatency: 5.394435s, minLatency 0.000003s 
+Algo 1, numKeys 50, ratio 5, numThread 10, readCount 1, writeCount: 1
+time elapsed: 11.8664s#txn: 5000, totalExecutionSeconds 87.295196 ttlLatency 0.000410s, maxLatency: 0.000000s, minLatency 0.000000s 
+Algo 1, numKeys 50, ratio 5, numThread 10, readCount 5, writeCount: 1
+time elapsed: 11.8946s#txn: 5000, totalExecutionSeconds 87.585213 ttlLatency 0.000413s, maxLatency: 0.000000s, minLatency 0.000000s 
+Algo 1, numKeys 50, ratio 5, numThread 10, readCount 10, writeCount: 1
+time elapsed: 11.939s#txn: 5000, totalExecutionSeconds 88.039923 ttlLatency 0.000413s, maxLatency: 0.000000s, minLatency 0.000000s 
+Algo 1, numKeys 50, ratio 5, numThread 10, readCount 20, writeCount: 1
+time elapsed: 14.614s#txn: 5000, totalExecutionSeconds 114.760856 ttlLatency 0.000414s, maxLatency: 0.000000s, minLatency 0.000000s 
+Algo 1, numKeys 50, ratio 5, numThread 10, readCount 50, writeCount: 1
+time elapsed: 29.5813s#txn: 5000, totalExecutionSeconds 264.388346 ttlLatency 0.000417s, maxLatency: 0.000000s, minLatency 0.000000s 
+
+-------------Examine writeCount---------------:
+Algo 0, numKeys 50, ratio 5, numThread 10, readCount 5, writeCount: 1
+time elapsed: 38.5503s#txn: 5000, totalExecutionSeconds 353.931590 ttlLatency 314.414280s, maxLatency: 0.877800s, minLatency 0.000003s 
+Algo 0, numKeys 50, ratio 5, numThread 10, readCount 5, writeCount: 5
+time elapsed: 55.6592s#txn: 5000, totalExecutionSeconds 524.842402 ttlLatency 465.760399s, maxLatency: 0.938851s, minLatency 0.000003s 
+Algo 0, numKeys 50, ratio 5, numThread 10, readCount 5, writeCount: 10
+time elapsed: 77.5931s#txn: 5000, totalExecutionSeconds 743.922591 ttlLatency 660.198344s, maxLatency: 1.667277s, minLatency 0.000003s 
+Algo 0, numKeys 50, ratio 5, numThread 10, readCount 5, writeCount: 20
+time elapsed: 123.227s#txn: 5000, totalExecutionSeconds 1200.054522 ttlLatency 1065.909246s, maxLatency: 1.910423s, minLatency 0.000003s 
+Algo 0, numKeys 50, ratio 5, numThread 10, readCount 5, writeCount: 50
+time elapsed: 257.202s#txn: 5000, totalExecutionSeconds 2538.146020 ttlLatency 2254.174880s, maxLatency: 4.323253s, minLatency 0.000003s 
+Algo 1, numKeys 50, ratio 5, numThread 10, readCount 5, writeCount: 1
+time elapsed: 11.846s#txn: 5000, totalExecutionSeconds 87.102818 ttlLatency 0.000414s, maxLatency: 0.000000s, minLatency 0.000000s 
+Algo 1, numKeys 50, ratio 5, numThread 10, readCount 5, writeCount: 5
+time elapsed: 29.7934s#txn: 5000, totalExecutionSeconds 266.395456 ttlLatency 0.000415s, maxLatency: 0.000000s, minLatency 0.000000s 
+Algo 1, numKeys 50, ratio 5, numThread 10, readCount 5, writeCount: 10
+time elapsed: 51.3172s#txn: 5000, totalExecutionSeconds 481.422421 ttlLatency 0.000416s, maxLatency: 0.000000s, minLatency 0.000000s 
+Algo 1, numKeys 50, ratio 5, numThread 10, readCount 5, writeCount: 20
+time elapsed: 95.1717s#txn: 5000, totalExecutionSeconds 919.487730 ttlLatency 0.000418s, maxLatency: 0.000000s, minLatency 0.000000s 
+Algo 1, numKeys 50, ratio 5, numThread 10, readCount 5, writeCount: 50
+time elapsed: 227.709s#txn: 5000, totalExecutionSeconds 2243.747832 ttlLatency 0.000424s, maxLatency: 0.000001s, minLatency 0.000000s 
+
+-------------Examine numThread---------------:
+Algo 0, numKeys 50, ratio 5, numThread 5, readCount 5, writeCount: 1
+time elapsed: 38.0632s#txn: 5000, totalExecutionSeconds 174.570535 ttlLatency 135.482405s, maxLatency: 0.188062s, minLatency 0.000003s 
+Algo 0, numKeys 50, ratio 5, numThread 10, readCount 5, writeCount: 1
+time elapsed: 38.0666s#txn: 5000, totalExecutionSeconds 349.048085 ttlLatency 310.007913s, maxLatency: 0.567070s, minLatency 0.000003s 
+Algo 0, numKeys 50, ratio 5, numThread 20, readCount 5, writeCount: 1
+time elapsed: 38.1228s#txn: 5000, totalExecutionSeconds 698.430324 ttlLatency 659.039151s, maxLatency: 1.465308s, minLatency 0.000003s 
+Algo 0, numKeys 50, ratio 5, numThread 50, readCount 5, writeCount: 1
+time elapsed: 38.2335s#txn: 5000, totalExecutionSeconds 1745.556244 ttlLatency 1706.145841s, maxLatency: 5.253582s, minLatency 0.000003s 
+Algo 1, numKeys 50, ratio 5, numThread 5, readCount 5, writeCount: 1
+time elapsed: 12.3307s#txn: 5000, totalExecutionSeconds 45.996895 ttlLatency 0.000415s, maxLatency: 0.000000s, minLatency 0.000000s 
+Algo 1, numKeys 50, ratio 5, numThread 10, readCount 5, writeCount: 1
+time elapsed: 11.8893s#txn: 5000, totalExecutionSeconds 87.501580 ttlLatency 0.000412s, maxLatency: 0.000000s, minLatency 0.000000s 
+Algo 1, numKeys 50, ratio 5, numThread 20, readCount 5, writeCount: 1
+time elapsed: 10.9693s#txn: 5000, totalExecutionSeconds 156.435314 ttlLatency 0.000406s, maxLatency: 0.000000s, minLatency 0.000000s 
+Algo 1, numKeys 50, ratio 5, numThread 50, readCount 5, writeCount: 1
+time elapsed: 11.5374s#txn: 5000, totalExecutionSeconds 418.171992 ttlLatency 0.000503s, maxLatency: 0.000092s, minLatency 0.000000s 

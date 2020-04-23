@@ -142,7 +142,7 @@ namespace littleBadger {
 
       std::chrono::system_clock::time_point endTime = std::chrono::system_clock::now();
       std::chrono::duration<double> elapsed_seconds = endTime - startTime;
-      std::cout << "elapsed time: " << elapsed_seconds.count() << "s\n";
+      std::cout << "time elapsed: " << elapsed_seconds.count() << "s";
 
       getThroughput();
       getLatency();

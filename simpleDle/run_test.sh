@@ -26,7 +26,7 @@ reset() {
     k=$_numKeys
     r=$_ratio
     n=$_numThread
-    readt=$_readCount
+    read=$_readCount
     write=$_writeCount
 }
 
@@ -34,9 +34,9 @@ runMain() {
     $pwd/littleBadger_main $a $k $r $n $read $write 1>> output
 }
 
-# printf "Start test:\n" > output
-# printf "\nExamine ratio:\n" >> output
-for i in 1
+printf "Start test:\n" > output
+printf "\n-------------Examine ratio---------------:\n" >> output
+for i in 0 1
 do
     a=$i
     for j in {0..10}
@@ -47,4 +47,42 @@ do
     done
 done
 
+reset
+printf "\n-------------Examine readCount---------------:\n" >> output
+for i in 0 1
+do
+    a=$i
+    for j in 1 5 10 20 50
+    do
+        read=$j
+        pConfig >> output
+        runMain
+    done
+done
+
+reset
+printf "\n-------------Examine writeCount---------------:\n" >> output
+for i in 0 1
+do
+    a=$i
+    for j in 1 5 10 20 50
+    do
+        write=$j
+        pConfig >> output
+        runMain
+    done
+done
+
+reset
+printf "\n-------------Examine numThread---------------:\n" >> output
+for i in 0 1
+do
+    a=$i
+    for j in 5 10 20 50
+    do
+        n=$j
+        pConfig >> output
+        runMain
+    done
+done
 

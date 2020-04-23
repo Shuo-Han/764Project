@@ -101,10 +101,10 @@ namespace littleBadger {
     }
 
     // read phase / logic operation for WRITE actions
-    std::vector<Record> privateBuffer;
+    std::vector<Record*> privateBuffer;
     for (size_t index = 0; index < writeActions.size(); index++) {
       int actIndex = writeActions[index];
-      Record newRecord(values[actIndex]);
+      Record* newRecord = new Record(values[actIndex]);
       privateBuffer.push_back(newRecord);
     }
 
@@ -137,8 +137,8 @@ namespace littleBadger {
     writeMap(key, value);
   };
 
-  const void BadgerThread::switchRecord(int key, Record record) {
-    switchMap(key, &record);
+  const void BadgerThread::switchRecord(int key, Record* record) {
+    switchMap(key, record);
   };
 
   const void BadgerThread::deleteRecord(int key) {

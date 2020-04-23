@@ -18,7 +18,7 @@ namespace littleBadger {
     for (int i = 0; i < numKeys; i++) {
       Record* newRecord = new Record(std::to_string(i));
       mapPointerStructure[i] = newRecord;
-      std::cout << mapPointerStructure.find(i)->second->value << std::endl;
+      // std::cout << mapPointerStructure.find(i)->second->value << std::endl;
     }
   }
 
@@ -37,8 +37,7 @@ namespace littleBadger {
   const void freeAllMapValue(){
     for ( std::map<int, Record*>::iterator it = mapPointerStructure.begin(); 
       it != mapPointerStructure.end(); ++it ) {
-        // delete it->second;
-        std::cout << it -> second -> value << "\n"; 
+        delete it->second;
     }
   }
 
