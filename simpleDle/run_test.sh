@@ -4,7 +4,7 @@ _alg=0
 _numKeys=50
 _ratio=5
 _numThread=10
-_readCount=5
+_readCount=20
 _writeCount=1
 
 a=$_alg
@@ -31,28 +31,28 @@ reset() {
 }
 
 runMain() {
-    $pwd/littleBadger_main $a $k $r $n $read $write 1>> output
+    $pwd/littleBadger_main $a $k $r $n $read $write >> output
 }
 
-printf "Start test:\n" > output
-printf "\n-------------Examine ratio---------------:\n" >> output
-for i in 0 1
-do
-    a=$i
-    for j in {0..10}
-    do
-        r=$j
-        pConfig >> output
-        runMain
-    done
-done
+# printf "Start test:\n" > output
+# printf "\n-------------Examine ratio---------------:\n" >> output
+# for i in 0 1
+# do
+#     a=$i
+#     for j in {1..9}
+#     do
+#         r=$j
+#         pConfig >> output
+#         runMain
+#     done
+# done
 
 reset
 printf "\n-------------Examine readCount---------------:\n" >> output
 for i in 0 1
 do
     a=$i
-    for j in 1 5 10 20 50
+    for j in 10 20 30 40 50 100
     do
         read=$j
         pConfig >> output
@@ -65,7 +65,7 @@ printf "\n-------------Examine writeCount---------------:\n" >> output
 for i in 0 1
 do
     a=$i
-    for j in 1 5 10 20 50
+    for j in 1 5 15 20 25
     do
         write=$j
         pConfig >> output

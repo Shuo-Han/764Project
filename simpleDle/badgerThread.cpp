@@ -42,13 +42,13 @@ namespace littleBadger {
     setLatency(elapsed_seconds.count());
 
     // read phase / logic operation
-    std::this_thread::sleep_for(std::chrono::milliseconds(readCount));
+    std::this_thread::sleep_for(std::chrono::microseconds(readCount));
 
     // commit phase 
     for (size_t actIndex = 0; actIndex < writeActions.size(); actIndex++) {
       writeRecord(keys[writeActions[actIndex]], values[writeActions[actIndex]]);
     }
-    std::this_thread::sleep_for(std::chrono::milliseconds(writeCount));
+    std::this_thread::sleep_for(std::chrono::microseconds(writeCount));
 
     // release locks
     for (size_t actIndex = 0; actIndex < actions.size(); actIndex++) {
@@ -81,7 +81,7 @@ namespace littleBadger {
     setLatency(elapsed_seconds.count());
 
     // read phase for 
-    std::this_thread::sleep_for(std::chrono::milliseconds(readCount));
+    std::this_thread::sleep_for(std::chrono::microseconds(readCount));
 
     // release / logic operation for READ actions
     for (size_t actIndex = 0; actIndex < actions.size(); actIndex++) {
@@ -119,7 +119,7 @@ namespace littleBadger {
       int actIndex = writeActions[index];
       switchRecord(keys[actIndex], privateBuffer[index]);
     }
-    std::this_thread::sleep_for(std::chrono::milliseconds(writeCount));
+    std::this_thread::sleep_for(std::chrono::microseconds(writeCount));
 
     // release EXCLUSIVE locks
     for (size_t actIndex = 0; actIndex < actions.size(); actIndex++) {

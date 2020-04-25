@@ -37,7 +37,7 @@ namespace littleBadger {
 
     if (myfile.is_open()) {
       // there are 10000 txns and 50 records
-      for (int txnID = 0; txnID < 5000; txnID++) {
+      for (int txnID = 0; txnID < 10000; txnID++) {
         std::vector<int> visit;
 
         // get 10 keys and sort them for avoiding dead locks in badgerThread
