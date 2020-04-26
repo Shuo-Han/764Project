@@ -64,8 +64,8 @@ namespace littleBadger {
    * this is DLE mechanism for concurrency control 
    */
   const void BadgerThread::dleRun(int threadId) {
-    // start time of getting locks
-    auto start = std::chrono::system_clock::now();
+    // start time of getting read locks
+    auto startR = std::chrono::system_clock::now();
 
     // get locks for READ actions
     for (size_t actIndex = 0; actIndex < actions.size(); actIndex++) {
@@ -75,10 +75,9 @@ namespace littleBadger {
       } 
     }
 
-    // latency of getting locks
-    auto end = std::chrono::system_clock::now();
-    std::chrono::duration<double, std::ratio<1>> elapsed_seconds = end - start;
-    setLatency(elapsed_seconds.count());
+    // latency of getting read locks
+    auto endR = std::chrono::system_clock::now();
+    std::chrono::duration<double, std::ratio<1>> elapsedR_seconds = endR - startR;
 
     // read phase for 
     std::this_thread::sleep_for(std::chrono::microseconds(readCount));
@@ -90,6 +89,9 @@ namespace littleBadger {
       }
     }
 
+    // start time of getting write locks
+    auto startW = std::chrono::system_clock::now();
+
     // get locks for WRITE actions
     std::vector<int> writeActions;
     for (size_t actIndex = 0; actIndex < actions.size(); actIndex++) {
@@ -99,6 +101,12 @@ namespace littleBadger {
         acquire(keys[actIndex], RESERVED);
       }
     }
+    
+    // latency of getting read locks
+    auto endW = std::chrono::system_clock::now();
+    std::chrono::duration<double, std::ratio<1>> elapsedW_seconds = endW - startW;
+    setLatency(elapsedW_seconds.count()+elapsedR_seconds.count());
+    
 
     // read phase / logic operation for WRITE actions
     std::vector<Record*> privateBuffer;

@@ -1,4 +1,4 @@
-# .o files are objects. They are the output of the compiler and input to the linker/librarian.
+qadasd# .o files are objects. They are the output of the compiler and input to the linker/librarian.
 # .a files are archives. They are groups of objects or static libraries and are also input into the linker.
 # -I. is included so that gcc will look in the current directory (.) for including .h file. 
 # -c says not to run the linker. Then the output consists of object files output by the assembler.

@@ -35,6 +35,7 @@ runMain() {
 }
 
 # printf "Start test:\n" > output
+
 # printf "\n-------------Examine ratio---------------:\n" >> output
 # for i in 0 1
 # do
@@ -52,7 +53,7 @@ printf "\n-------------Examine readCount---------------:\n" >> output
 for i in 0 1
 do
     a=$i
-    for j in 10 20 30 40 50 100
+    for j in 10 20 50 100 1000 2000 3000 5000
     do
         read=$j
         pConfig >> output
